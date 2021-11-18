@@ -2,11 +2,11 @@ name: ad service
 
 on:
   workflow_call:
-    inputs:
     secrets:
       username:
+        required: false
       password:
-        required: true
+        required: false
   push:
     branches: [ master ]
     paths: 
