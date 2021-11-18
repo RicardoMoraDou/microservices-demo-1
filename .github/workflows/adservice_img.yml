@@ -24,7 +24,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag adservice:v1
+           docker build src/adservice/. --tag hipsterequipofive1.azurecr.io/adservice:v1
            docker push hipsterequipofive1.azurecr.io/adservice:v1
           
       
