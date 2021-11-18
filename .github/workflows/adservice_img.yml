@@ -1,6 +1,7 @@
 name: ad service 
 
 on:
+
   push:
     branches: [ master ]
     paths: 
