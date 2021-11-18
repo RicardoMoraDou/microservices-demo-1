@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.ACR_PASS }}
     
     - name: Build the Docker images
-      run: docker build src/adservice/ --file Dockerfile --tag adservice:v1
+      run: docker build src/adservice/. --tag adservice:v1
            docker push hipsterequipofive1.azurecr.io/adservice:v1
           
       
