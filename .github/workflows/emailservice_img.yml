@@ -4,11 +4,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "src/emailservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "src/emailservice/*"
 
 jobs:
 
@@ -26,7 +26,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag hipsterequipofive1.azurecr.io/adservice:v1
-           docker push hipsterequipofive1.azurecr.io/adservice:v1
+           docker build src/emailservice/. --tag hipsterequipofive1.azurecr.io/emailservice:v1
+           docker push hipsterequipofive1.azurecr.io/emailservice:v1
           
       

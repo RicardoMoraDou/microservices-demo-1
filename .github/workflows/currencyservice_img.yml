@@ -4,11 +4,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "src/currencyservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "src/currencyservice/*"
 
 jobs:
 
@@ -26,7 +26,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag hipsterequipofive1.azurecr.io/adservice:v1
-           docker push hipsterequipofive1.azurecr.io/adservice:v1
+           docker build src/currencyservice/. --tag hipsterequipofive1.azurecr.io/currencyservice:v1
+           docker push hipsterequipofive1.azurecr.io/currencyservice:v1
           
       

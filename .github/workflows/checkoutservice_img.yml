@@ -4,16 +4,16 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+    - "src/checkoutservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
-
+    - "src/checkoutservice/*"
+    
 jobs:
-
+  
   build:
-
+    
     runs-on: ubuntu-latest
    
     steps:
@@ -26,7 +26,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag hipsterequipofive1.azurecr.io/adservice:v1
-           docker push hipsterequipofive1.azurecr.io/adservice:v1
+           docker build src/checkoutservice/. --tag hipsterequipofive1.azurecr.io/checkoutservice:v1
+           docker push hipsterequipofive1.azurecr.io/checkoutservice:v1
           
       
