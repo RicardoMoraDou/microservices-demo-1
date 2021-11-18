@@ -26,8 +26,8 @@ jobs:
 
     - uses: ./.github/actions/my-action@v1
       with:
-          username: ${{ secrets.ACR_USER }}
-          password: ${{ secrets.ACR_PASS }}   
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}   
 
     - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
