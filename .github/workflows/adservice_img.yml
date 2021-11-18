@@ -1,6 +1,7 @@
 name: ad service 
 
 on:
+  workflow_call:
   push:
     branches: [ master ]
     paths: 

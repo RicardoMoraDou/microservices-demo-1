@@ -1,6 +1,6 @@
 name: Init Services
 
-on:
+on: workflow_call
   push:
     branches: [ master ]
     paths: 
