@@ -4,30 +4,8 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name                = "${var.prefix}-rg"
+  name                = "rg-${var.suffix}-${var.environment}-${var.location}"
   location            = var.location
-}
-
-// module "vnet" {
-//   source              = "./modules/vnet"
-//   prefix              = var.prefix
-//   location            = var.location
-//   resource_group_name = data.azurerm_resource_group.rg.name    
-// }
-
-module "acr" {
-  source              = "./modules/acr"
-  prefix              = var.prefix
-  location            = var.location
-  rg_name             = azurerm_resource_group.rg.name
-}
-
-module "aks" {
-  source              = "./modules/aks"
-  prefix              = var.prefix
-  location            = var.location
-  rg_name             = azurerm_resource_group.rg.name
-  acr_id              = module.acr.id
 }
 
 module "security" {
@@ -38,16 +16,34 @@ module "security" {
 
 module "vnet" {
   source              = "./modules/vnet"
-  prefix              = var.prefix
+  suffix              = var.suffix
+  environment         = var.environment
   location            = var.location
   rg_name             = azurerm_resource_group.rg.name
 }
 
+module "acr" {
+  source              = "./modules/acr"
+  suffix              = var.suffix
+  environment         = var.environment
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg.name
+}
+
+module "aks" {
+  source              = "./modules/aks"
+  suffix              = var.suffix
+  environment         = var.environment
+  location            = var.location
+  rg_name             = azurerm_resource_group.rg.name
+  acr_id              = module.acr.id
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                  = "${var.prefix}-vm"
+  name                  = "vm-vault-${var.suffix}-${var.environment}-${var.location}"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
-  network_interface_ids = [module.vnet.nic_id]
+  network_interface_ids = [module.vnet.vault_nic_id]
   size                  = "Standard_DS1_v2"
 
   os_disk {

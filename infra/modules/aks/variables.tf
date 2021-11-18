@@ -1,20 +1,24 @@
-variable "prefix" {
-    type    = string
+variable "environment" {
+    description = "A environment tag used for all resources"
 }
 
-variable "rg_name" {
-    type    = string
+variable "suffix" {
+    description = "A suffix used for all resources"
 }
 
 variable "location" {
-    type    = string
+    description  = "The Azure Region in which all resources should be provisioned"
+}
+
+variable "rg_name" {  
+    description = "Resource Group Name"
 }
 
 variable "dns_prefix" {
-    type    = string
-    default = "hipsterdev"
+    type            = string
+    default         = "hipsterdev"
 }
 
 variable "acr_id" {
-    type    = string
+    description     = "Azure Container Registry ID"
 }

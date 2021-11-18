@@ -1,18 +1,12 @@
-variable "rg_name" {
-  type      = string
-  default   = "myGroup"
+variable "location" {
+  description   = "The Azure Region in which all resources should be provisioned"
 }
 
-variable "location" {
-  type      = string
-  default   = "eastus"
+variable "rg_name" {
+  description   = "Resource Group Name"
 }
 
 variable "name" {
-  type      = string
-  default   = "id_rsa"
+  type          = string
+  default       = "id_rsa"
 }
-
-// variable "pub_key" {
-//   type      =  string
-// }

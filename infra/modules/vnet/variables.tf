@@ -1,26 +1,25 @@
-variable "prefix" {
-  type      = string
+variable "environment" {
+  description   = "A environment tag used for all resources"
 }
 
-variable "rg_name" {
-  type      = string
+variable "suffix" {
+  description   = "A suffix used for all resources"
 }
 
 variable "location" {
-  type      = string
+  description   = "The Azure Region in which all resources should be provisioned"
+}
+
+variable "rg_name" {  
+  description   = "Resource Group Name"
 }
 
 variable "addr_space" {
-  type    = string
-  default = "10.0.0.0/16"
+  type          = string
+  default       = "10.0.0.0/16"
 }
 
-variable "addr_prefixes" {
-  type    = string
-  default = "10.0.1.0/24"
-}
-
-variable "ip_name" {
-  type    = string
-  default = "ip_hipster"
+variable "addr_prefixes_vault" {
+  type          = string
+  default       = "10.0.2.0/24"
 }
