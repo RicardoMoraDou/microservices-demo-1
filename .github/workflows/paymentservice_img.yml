@@ -1,0 +1,35 @@
+name: payment service
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - "src/paymentservice/*"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - "src/paymentservice/*"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+    
+    - name: Build the Docker images
+      run: |
+           docker build src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
+          
+      
+        
+         
+

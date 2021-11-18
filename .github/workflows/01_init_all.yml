@@ -1,0 +1,175 @@
+name: Init Services
+
+on: 
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_all.yml"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_all.yml"
+
+jobs:
+
+  adservice:
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+    
+    - name: Build the Docker images adservice
+      run: |
+           docker build src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/adservice:v1
+
+  cartservice:
+    runs-on: ubuntu-latest
+    needs: adservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images cartservice
+      run: |
+           docker build src/cartservice/. --tag ${{ secrets.ACR_SERVER }}/cartservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/cartservice:v1
+
+  checkoutservice:
+    runs-on: ubuntu-latest
+    needs: cartservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images cheoutservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/checkoutservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/checkoutservice:v1
+
+  currencyservice:
+    runs-on: ubuntu-latest
+    needs: checkoutservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images currencyservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/currencyservice:v1
+
+  emailservice:
+    runs-on: ubuntu-latest
+    needs: currencyservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images emailservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/emailservice:v1
+
+  frontend:
+    runs-on: ubuntu-latest
+    needs: emailservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images frontend
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/frontend:v1
+           docker push ${{ secrets.ACR_SERVER }}/frontend:v1
+
+  paymentservice:
+    runs-on: ubuntu-latest
+    needs: frontend
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+          
+    - name: Build the Docker images paymentservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
+
+  productcatalog:
+    runs-on: ubuntu-latest
+    needs: paymentservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images productcatalog
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/productcatalog:v1
+           docker push ${{ secrets.ACR_SERVER }}/productcatalog:v1
+
+  recommendationservice:
+    runs-on: ubuntu-latest
+    needs: productcatalog
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images recommendationservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/recommendationservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/recommendationservice:v1
+
+  shippingservice:
+    runs-on: ubuntu-latest
+    needs: recommendationservice
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }}
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+
+    - name: Build the Docker images shippingservice
+      run: |
+           docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/shippingservice:v1
+    
+          

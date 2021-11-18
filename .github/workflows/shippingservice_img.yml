@@ -1,0 +1,32 @@
+name: shipping service
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - "src/shippingservice/*"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - "src/shippingservice/*"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+          login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
+          username: ${{ secrets.ACR_USER }}
+          password: ${{ secrets.ACR_PASS }}
+    
+    - name: Build the Docker images
+      run: |
+           docker build src/shippingservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/shippingservice:v1
+          
+      
