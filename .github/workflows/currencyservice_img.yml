@@ -20,13 +20,13 @@ jobs:
     - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
       with:
-          login-server: hipsterequipofive1.azurecr.io # default: index.docker.io
+          login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PASS }}
     
     - name: Build the Docker images
       run: |
-           docker build src/currencyservice/. --tag hipsterequipofive1.azurecr.io/currencyservice:v1
-           docker push hipsterequipofive1.azurecr.io/currencyservice:v1
+           docker build src/currencyservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/currencyservice:v1
           
       

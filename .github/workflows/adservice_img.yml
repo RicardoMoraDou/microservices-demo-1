@@ -1,12 +1,6 @@
 name: ad service 
 
 on:
-  workflow_call:
-    inputs:
-    secrets:
-      username:
-      password:
-        required: true
   push:
     branches: [ master ]
     paths: 
@@ -23,22 +17,16 @@ jobs:
     runs-on: ubuntu-latest
    
     steps:
-
-    - uses: ./.github/actions/my-action@v1
-      with:
-          username: ${{ secrets.username }}
-          password: ${{ secrets.password }}   
-
     - uses: actions/checkout@v2
     - uses: azure/docker-login@v1
       with:
-          login-server: hipsterequipofive1.azurecr.io # default: index.docker.io
+          login-server: ${{ secrets.ACR_SERVER }}
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PASS }}
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag hipsterequipofive1.azurecr.io/adservice:v1
-           docker push hipsterequipofive1.azurecr.io/adservice:v1
+           docker build src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
+           docker push ${{ secrets.ACR_SERVER }}/adservice:v1
           
       
