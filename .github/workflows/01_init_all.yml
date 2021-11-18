@@ -12,6 +12,6 @@ on:
 
 jobs:
   call-workflow-1:
-    uses: RicardoMoraDou/microservices-demo-1/.github/workflows/adservice_img.yml@v1
+    uses: RicardoMoraDou/microservices-demo-1/.github/workflows/adservice_img.yml@master
   call-workflow-2:
-    uses: RicardoMoraDou/microservices-demo-1/.github/workflows/cartservice_img.yml@v1
+    uses: RicardoMoraDou/microservices-demo-1/.github/workflows/cartservice_img.yml@master
