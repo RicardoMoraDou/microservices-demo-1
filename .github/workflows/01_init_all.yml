@@ -13,7 +13,6 @@ on:
 jobs:
   call-workflow-1:
     uses: RicardoMoraDou/microservices-demo-1/.github/workflows/adservice_img.yml@master
-    with:
     secrets:
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PASS }} 
