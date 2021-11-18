@@ -1,40 +1,40 @@
 # Create virtual network
 resource "azurerm_virtual_network" "vnet" {
-    name                = "${var.prefix}-vn"
-    address_space       = [var.addr_space]
-    location            = var.location
-    resource_group_name = var.rg_name
+    name                    = "vnet-vault-${var.suffix}-${var.environment}-${var.location}"
+    address_space           = [var.addr_space]
+    location                = var.location
+    resource_group_name     = var.rg_name
 
     tags = {
-        environment = "Dev"
+        environment = var.environment
     }
 }
 
 # Create subnet
-resource "azurerm_subnet" "subnet" {
-    name                 = "${var.prefix}-sn1"
-    resource_group_name  = var.rg_name
-    virtual_network_name = azurerm_virtual_network.vnet.name
-    address_prefixes       = [var.addr_prefixes]
+resource "azurerm_subnet" "subnet_vault" {
+    name                    = "snet-vault-${var.suffix}"
+    resource_group_name     = var.rg_name
+    virtual_network_name    = azurerm_virtual_network.vnet.name
+    address_prefixes        = [var.addr_prefixes_vault]
 }
 
 # Create public IPs
-resource "azurerm_public_ip" "ip" {
-    name                         = var.ip_name
-    location                     = var.location
-    resource_group_name          = var.rg_name
-    allocation_method            = "Dynamic"
+resource "azurerm_public_ip" "ip_vault" {
+    name                    = "ip-vault-${var.suffix}"
+    location                = var.location
+    resource_group_name     = var.rg_name
+    allocation_method       = "Dynamic"
 
     tags = {
-        environment = "Dev"
+        environment = var.environment
     }
 }
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "nsg" {
-    name                = "${var.prefix}-nsg"
-    location            = var.location
-    resource_group_name = var.rg_name
+    name                    = "nsg-vault-${var.suffix}-${var.environment}-${var.location}"
+    location                = var.location
+    resource_group_name     = var.rg_name
 
     security_rule {
         name                       = "SSH"
@@ -49,32 +49,32 @@ resource "azurerm_network_security_group" "nsg" {
     }
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment
     }
 }
 
 
 # Create network interface
-resource "azurerm_network_interface" "nic" {
-    name                      = "${var.prefix}-nic"
+resource "azurerm_network_interface" "nic_vault" {
+    name                      = "nic-vault-${var.suffix}-${var.environment}-${var.location}"
     location                  = var.location
     resource_group_name       = var.rg_name
 
     ip_configuration {
         name                          = "myNicConfiguration"
-        subnet_id                     = azurerm_subnet.subnet.id
+        subnet_id                     = azurerm_subnet.subnet_vault.id
         private_ip_address_allocation = "Dynamic"
-        public_ip_address_id          = azurerm_public_ip.ip.id
+        public_ip_address_id          = azurerm_public_ip.ip_vault.id
     }
 
     tags = {
-        environment = "Terraform Demo"
+        environment = var.environment
     }
 }
 
 # Connect the security group to the network interface
-resource "azurerm_network_interface_security_group_association" "nic_nsg_association" {
+resource "azurerm_network_interface_security_group_association" "vault_nic_nsg_association" {
     
-    network_interface_id      = azurerm_network_interface.nic.id
+    network_interface_id      = azurerm_network_interface.nic_vault.id
     network_security_group_id = azurerm_network_security_group.nsg.id
 }
