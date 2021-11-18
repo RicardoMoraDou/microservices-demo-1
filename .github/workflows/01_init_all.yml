@@ -12,8 +12,7 @@ on:
 
 jobs:
 
-  build:
-
+  adservice:
     runs-on: ubuntu-latest
    
     steps:
@@ -29,46 +28,55 @@ jobs:
            docker build src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
            docker push ${{ secrets.ACR_SERVER }}/adservice:v1
 
+    steps:
     - name: Build the Docker images cartservice
       run: |
            docker build src/cartservice/. --tag ${{ secrets.ACR_SERVER }}/cartservice:v1
            docker push ${{ secrets.ACR_SERVER }}/cartservice:v1
 
+    steps:
     - name: Build the Docker images cheoutservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/checkoutservice:v1
            docker push ${{ secrets.ACR_SERVER }}/checkoutservice:v1
 
+    steps:
     - name: Build the Docker images currencyservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:v1
            docker push ${{ secrets.ACR_SERVER }}/currencyservice:v1
 
+    steps:
     - name: Build the Docker images emailservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:v1
            docker push ${{ secrets.ACR_SERVER }}/emailservice:v1
 
+    steps:
     - name: Build the Docker images frontend
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/frontend:v1
            docker push ${{ secrets.ACR_SERVER }}/frontend:v1
 
+    steps:
     - name: Build the Docker images paymentservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
            docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
 
+    steps:
     - name: Build the Docker images productcatalog
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/productcatalog:v1
            docker push ${{ secrets.ACR_SERVER }}/productcatalog:v1
 
+    steps:
     - name: Build the Docker images recommendationservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/recommendationservice:v1
            docker push ${{ secrets.ACR_SERVER }}/recommendationservice:v1
 
+    steps:
     - name: Build the Docker images shippingservice
       run: |
            docker build src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:v1
