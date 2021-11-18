@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: product catalog service 
 
 on:
   push:
