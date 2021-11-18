@@ -1,0 +1,17 @@
+name: Init Services
+
+on:
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_all.yml"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_all.yml"
+
+jobs:
+  call-workflow-1:
+    uses: .github/workflows/adservice_img.yml@v1
+  call-workflow-2:
+    uses: .github/workflows/cartservice_img.yml@v1
