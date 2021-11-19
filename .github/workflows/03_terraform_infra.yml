@@ -36,7 +36,7 @@ jobs:
       - name: Terraform plan
         run: |
           cd infra
-          terraform destroy
+          terraform destroy --auto-approve
 
 #      - name: Terraform apply
 #        run: |
