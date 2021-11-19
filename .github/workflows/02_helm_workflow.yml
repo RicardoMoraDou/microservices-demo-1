@@ -4,11 +4,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - ".github/workflows/01_init_images.yml"
+      - ".github/workflows/02_helm_workflow.yml"
   pull_request:
     branches: [ master ]
     paths: 
-      - ".github/workflows/01_init_images.yml"
+      - ".github/workflows/02_helm_workflow.yml"
 
 jobs:
 
