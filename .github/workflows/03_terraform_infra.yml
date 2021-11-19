@@ -41,5 +41,5 @@ jobs:
           cd infra
           terraform apply --auto-approve
 
-      - name: Terraform Format 
+      - name: Terraform Format  
         run: terraform fmt -check
