@@ -47,3 +47,26 @@ jobs:
       run: |
            az acr build  --registry hipsterequipofive1 --image currencyservice:v1 src/currencyservice/.
 
+    - name: Build the Docker emailservice
+      run: |
+           az acr build  --registry hipsterequipofive1 --image emailservice:v1 src/emailservice/.
+
+    - name: Build the Docker frontend
+      run: |
+           az acr build  --registry hipsterequipofive1 --image frontend:v1 src/frontend/.
+
+    - name: Build the Docker paymentservice
+      run: |
+           az acr build  --registry hipsterequipofive1 --image paymentservice:v1 src/paymentservice/.
+
+    - name: Build the Docker productcatalogservice
+      run: |
+           az acr build  --registry hipsterequipofive1 --image productcatalogservice:v1 src/productcatalogservice/.
+
+    - name: Build the Docker recommendationservice
+      run: |
+           az acr build  --registry hipsterequipofive1 --image recommendationservice:v1 src/recommendationservice/.
+
+    - name: Build the Docker shippingservice
+      run: |
+           az acr build  --registry hipsterequipofive1 --image shippingservice:v1 src/shippingservice/.
