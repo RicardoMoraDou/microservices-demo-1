@@ -45,7 +45,7 @@ jobs:
            docker push ${{ secrets.ACR_SERVER }}/cartservice:v1
 
   checkoutservice:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     needs: cartservice
     steps:
     - uses: actions/checkout@v2
