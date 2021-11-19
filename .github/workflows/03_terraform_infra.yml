@@ -28,17 +28,17 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd terraform
+          cd infra
           terraform init
 
       - name: Terraform plan
         run: |
-          cd terraform
+          cd infra
           terraform apply --auto-approve
 
       - name: Terraform apply
         run: |
-          cd terraform
+          cd infra
           terraform apply --auto-approve
 
       - name: Terraform Format
