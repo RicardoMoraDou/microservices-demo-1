@@ -41,7 +41,7 @@ jobs:
       - name: Terraform apply
         run: |
           cd infra
-          terraform delete --auto-approve
+          terraform destroy --auto-approve
 
       - name: Terraform Format    
         run: terraform fmt -check 
