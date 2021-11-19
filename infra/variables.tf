@@ -15,3 +15,7 @@ variable "location" {
     type            = string
     default         = "eastus"
 }
+
+variable "SSH_KEY" {
+    type            = string
+}
