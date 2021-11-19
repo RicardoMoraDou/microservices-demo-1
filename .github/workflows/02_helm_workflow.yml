@@ -50,4 +50,4 @@ jobs:
 
     - name: Helm list
       run: |
-           helm list 
+           ls 
