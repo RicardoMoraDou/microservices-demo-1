@@ -17,7 +17,7 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.2.0 && \
 RUN apk add --no-cache \
     busybox-extras \
     libc6-compat \
-    libunwind \
+    libunwind \ 
     libuuid \
     libgcc \
     libstdc++ \

@@ -1,0 +1,44 @@
+name: Init Services
+
+on: 
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/02_helm_workflow.yml"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/02_helm_workflow.yml"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+
+
+    - name: "Login AKS"
+      uses: azure/aks-set-context@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+        resource-group: 'hipster-rg'
+        cluster-name: 'hipster-aks'
+      id: login  
+    
+    - name: 'Install helm'
+      uses: azure/setup-helm@v1
+      with:
+        version: latest # default is latest stable
+      id: install
+
+    - name: Helm install hipsterstore chart
+      run: | 
+          helm install hipsterstore ./helmHipster

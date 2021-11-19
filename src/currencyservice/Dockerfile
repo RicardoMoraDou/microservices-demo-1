@@ -30,3 +30,4 @@ COPY . .
 EXPOSE 7000
 
 ENTRYPOINT [ "node", "server.js" ]
+ 
