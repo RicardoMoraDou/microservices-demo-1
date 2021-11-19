@@ -38,8 +38,8 @@ jobs:
       with:
         method: service-principal
         cluster-type: 'arc'
-        cluster-name: hipster-aks
-        resource-group: hipster-rg
+        cluster-name: 'hipster-aks'
+        resource-group: 'hipster-rg'
       id: setcontext     
     
     - name: 'Install helm'
