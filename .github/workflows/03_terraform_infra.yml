@@ -34,7 +34,7 @@ jobs:
       - name: Terraform plan
         run: |
           cd infra
-          terraform apply plan
+          terraform plan
 
       - name: Terraform apply
         run: |
