@@ -24,15 +24,6 @@ jobs:
       with:
         creds: ${{ secrets.PROJECTIN_SP }}
 
-#    - name: "Secret Cluster"
-#      uses: azure/k8s-create-secret@v1
-#      with:
-#        container-registry-url: ${{ secrets.ACR_SERVER }}
-#        container-registry-username: 1ef4f5d5-503e-40e7-8559-eef6885af25b
-#        container-registry-password: ALTV3y-_JeXZ1EthtztPpHK.wuyNA8PILK
-#        secret-name: octapal
-#        namespace: default
-#        force: true
 
     - name: "Login AKS"
       uses: azure/aks-set-context@v1
@@ -48,6 +39,6 @@ jobs:
         version: latest # default is latest stable
       id: install
 
-    - name: Helm list
+    - name: Helm install hipsterstore chart
       run: | 
-          helm install hipstergit ./helmHipster
+          helm install hipsterstore ./helmHipster
