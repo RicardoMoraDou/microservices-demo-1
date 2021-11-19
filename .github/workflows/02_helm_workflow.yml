@@ -36,11 +36,11 @@ jobs:
 
     - name: "Login AKS"
       uses: azure/aks-set-context@v1
-      with:
-        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
-        resource-group: 'hipster-rg'
-        cluster-name: 'hipster-aks'
-    id: login  
+        with:
+          creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+          resource-group: 'hipster-rg'
+          cluster-name: 'hipster-aks'
+        id: login  
     
     - name: 'Install helm'
       uses: azure/setup-helm@v1
