@@ -1,0 +1,33 @@
+name: Init Services
+
+on: 
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_images.yml"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/01_init_images.yml"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+   
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+        
+    - name: 'Install helm'
+      uses: azure/setup-helm@v1
+      with:
+        version: '<version>' # default is latest stable
+      id: install
+      run: |
+           helm list
