@@ -34,13 +34,13 @@ jobs:
 #        namespace: default
 #        force: true
 
-    - uses: azure/k8s-set-context@v1
+    - name: "Login AKS"
+      uses: azure/aks-set-context@v1
       with:
-        method: service-principal
-        cluster-type: 'arc'
-        cluster-name: 'hipster-aks'
+        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
         resource-group: 'hipster-rg'
-      id: setcontext     
+        cluster-name: 'hipster-aks'
+    id: login  
     
     - name: 'Install helm'
       uses: azure/setup-helm@v1
