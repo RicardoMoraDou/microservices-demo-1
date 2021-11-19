@@ -1,0 +1,45 @@
+name: Init Services
+
+on: 
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/03_terraform_infra.yml"
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/03_terraform_infra.yml"
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform plan
+        run: |
+          cd terraform
+          terraform apply --auto-approve
+
+      - name: Terraform apply
+        run: |
+          cd terraform
+          terraform apply --auto-approve
+
+      - name: Terraform Format
+        run: terraform fmt -check
