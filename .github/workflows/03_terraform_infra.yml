@@ -33,15 +33,15 @@ jobs:
           cd infra
           terraform init
 
-      - name: Terraform plan
-        run: |
-          cd infra
-          terraform plan
+#      - name: Terraform plan
+#        run: |
+#          cd infra
+#          terraform plan
 
       - name: Terraform apply
         run: |
           cd infra
-          terraform apply --auto-approve
+          terraform delete --auto-approve
 
       - name: Terraform Format    
         run: terraform fmt -check 
