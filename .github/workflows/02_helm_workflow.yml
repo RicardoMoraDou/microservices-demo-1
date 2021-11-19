@@ -29,5 +29,7 @@ jobs:
       with:
         version: '<version>' # default is latest stable
       id: install
+
+    - name: Helm list
       run: |
            helm list
