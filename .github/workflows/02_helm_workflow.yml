@@ -50,4 +50,5 @@ jobs:
 
     - name: Helm list
       run: |
-           ls 
+           
+          helm install hipstergit ./helmHipster
