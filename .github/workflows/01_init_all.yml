@@ -53,7 +53,7 @@ jobs:
       with:
           login-server: ${{ secrets.ACR_SERVER }}
           username: ${{ secrets.ACR_USER }}
-          password: ${{ secrets.ACR_PASS }}
+          password: ${{ secrets.ACR_PASS }} 
 
     - name: Build the Docker images cheoutservice
       run: |
