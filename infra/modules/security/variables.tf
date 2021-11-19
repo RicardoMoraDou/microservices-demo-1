@@ -10,3 +10,7 @@ variable "name" {
   type          = string
   default       = "id_rsa"
 }
+
+variable "SSH_KEY" {
+  type          = string
+}

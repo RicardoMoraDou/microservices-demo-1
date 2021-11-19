@@ -24,11 +24,27 @@ resource "azurerm_public_ip" "ip_vault" {
     location                = var.location
     resource_group_name     = var.rg_name
     allocation_method       = "Dynamic"
+    ip_version              = "IPv4"
 
     tags = {
         environment = var.environment
     }
 }
+
+// # Create DNs zone
+// resource "azurerm_dns_zone" "dns_zone_vault" {
+//   name                = "veryuniquehost123.com"
+//   resource_group_name = var.rg_name
+// }
+
+// # Create DNS record
+// resource "azurerm_dns_a_record" "dns_record_vault" {
+//   name                = "vault"
+//   zone_name           = azurerm_dns_zone.dns_zone_vault.name
+//   resource_group_name = var.rg_name
+//   ttl                 = 300
+//   target_resource_id  = azurerm_public_ip.ip_vault.id
+// }
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "nsg" {

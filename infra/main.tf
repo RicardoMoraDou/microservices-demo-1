@@ -12,6 +12,7 @@ module "security" {
   source              = "./modules/security"
   location            = var.location
   rg_name             = azurerm_resource_group.rg.name
+  SSH_KEY             = var.SSH_KEY
 }
 
 module "vnet" {
