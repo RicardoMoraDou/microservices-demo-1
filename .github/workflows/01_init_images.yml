@@ -2,7 +2,7 @@ name: Init Services
 
 on: 
   push:
-    branches: [ master ]
+    branches: [ master ] 
     paths: 
       - ".github/workflows/01_init_images.yml"
   pull_request:
