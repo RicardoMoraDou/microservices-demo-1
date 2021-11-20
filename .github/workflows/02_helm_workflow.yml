@@ -31,7 +31,7 @@ jobs:
         creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
         resource-group: 'hipster-rg'
         cluster-name: 'hipster-aks'
-      id: login  
+      id: login   
     
     - name: 'Install helm'
       uses: azure/setup-helm@v1
