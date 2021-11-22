@@ -4,14 +4,14 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - ".github/workflows/03_terraform_infra.yml"
+      - ".github/workflows/01_terraform_infra.yml"
   pull_request:
     branches: [ master ]
     paths: 
-      - ".github/workflows/03_terraform_infra.yml"
+      - ".github/workflows/01_terraform_infra.yml"
 
 jobs:
-  terraform:
+  terraform_infra:
     runs-on: ubuntu-latest
 
     env:
@@ -25,23 +25,34 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: "Login Azure ClI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PROJECTIN_SP }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
         run: |
-          cd infra
+          cd 01_Terraform_IaC
           terraform init
 
-#      - name: Terraform plan
-#        run: |
-#          cd infra
-#          terraform plan
+      - name: Terraform plan
+        run: |
+          cd 01_Terraform_IaC
+          terraform plan
 
       - name: Terraform apply
         run: |
-          cd infra
-          terraform destroy --auto-approve
+          cd 01_Terraform_IaC
+          terraform apply --auto-approve
 
       - name: Terraform Format    
-        run: terraform fmt -check 
+        run: |
+          cd 01_Terraform_IaC
+          terraform fmt -check 
+
+      - name: Attach ACR to AKS    
+        run: |
+          az aks update -n aks-hipster-dev-eastus -g rg-hipster-dev-eastus --attach-acr hipsterequipofive1

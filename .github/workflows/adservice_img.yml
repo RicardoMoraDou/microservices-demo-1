@@ -5,11 +5,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "02_Application/src/adservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-      - "src/adservice/*"
+      - "02_Application/src/adservice/*"
 
 jobs:
 
@@ -19,6 +19,13 @@ jobs:
    
     steps:
     - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+        
+    - name: 'Login Azure ACR'
     - uses: azure/docker-login@v1
       with:
           login-server: ${{ secrets.ACR_SERVER }}
@@ -27,7 +34,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
+           docker build 02_Application/src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
            docker push ${{ secrets.ACR_SERVER }}/adservice:v1
           
       

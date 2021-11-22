@@ -4,11 +4,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-    - "src/checkoutservice/*"
+    - "02_Application/src/checkoutservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-    - "src/checkoutservice/*"
+    - "02_Application/src/checkoutservice/*"
     
 jobs:
   
@@ -18,6 +18,13 @@ jobs:
    
     steps:
     - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+        
+    - name: 'Login Azure ACR'
     - uses: azure/docker-login@v1
       with:
           login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io

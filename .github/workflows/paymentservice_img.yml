@@ -4,11 +4,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - "src/paymentservice/*"
+      - "02_Application/src/paymentservice/*"
   pull_request:
     branches: [ master ]
     paths: 
-      - "src/paymentservice/*"
+      - "02_Application/src/paymentservice/*"
 
 jobs:
 
@@ -18,6 +18,13 @@ jobs:
    
     steps:
     - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+        
+    - name: 'Login Azure ACR'
     - uses: azure/docker-login@v1
       with:
           login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
@@ -26,7 +33,7 @@ jobs:
     
     - name: Build the Docker images
       run: |
-           docker build src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
+           docker build 02_Application/src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
            docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
           
       
