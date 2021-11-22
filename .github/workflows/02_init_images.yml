@@ -1,4 +1,4 @@
-name: Init all Images
+name: Init all Images 
 
 on: 
   push:
