@@ -24,7 +24,7 @@ jobs:
       with:
         creds: ${{ secrets.PROJECTIN_SP }}
         
-    - name: 'Login Azure ACR'
+    # Login Azure ACR
     - uses: azure/docker-login@v1
       with:
           login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
