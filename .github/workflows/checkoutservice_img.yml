@@ -19,12 +19,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: "Login Azure ClI"
-      uses: azure/login@v1
+    #  Login Azure ClI
+    - uses: azure/login@v1
       with:
         creds: ${{ secrets.PROJECTIN_SP }}
         
-    - name: 'Login Azure ACR'
+    # Login Azure ACR 
     - uses: azure/docker-login@v1
       with:
           login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
