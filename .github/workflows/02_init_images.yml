@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ] 
     paths: 
-      - ".github/workflows/02_init_images.yml"
+      - ".github/workflows/02_init_images.yml" 
   pull_request:
     branches: [ master ]
     paths: 
