@@ -1,0 +1,6 @@
+### DS_Stroe ###
+.DS_Store
+
+### Ansible files ###
+inventory
+ansible.cfg
