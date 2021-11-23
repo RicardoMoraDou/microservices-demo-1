@@ -34,7 +34,7 @@ jobs:
     
     - name: Deleted Img in ACR
       run: |
-          az acr repository delete --name hipsterequipofive1 --image ${{ secrets.ACR_SERVER }}/adservice:v1
+          az acr repository delete --name hipsterequipofive1 --image ${{ secrets.ACR_SERVER }}/adservice:v1 -y
 
     - name: Build the Docker images
       run: |

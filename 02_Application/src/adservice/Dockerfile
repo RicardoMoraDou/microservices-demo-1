@@ -15,7 +15,7 @@ FROM openjdk:8-slim
 
 # Download Stackdriver Profiler Java agent
 RUN apt-get -y update && apt-get install -qqy \
-    wget \
+    wget \ 
     && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /opt/cprof && \
     wget -q -O- https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent.tar.gz \
