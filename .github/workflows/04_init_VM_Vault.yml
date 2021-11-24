@@ -20,10 +20,11 @@ jobs:
 
     - name: Installing Ansible
       run: |
-        sudo apt-get update - y
+        sudo apt-get update -y
         sudo apt-get install ansible -y
 
     - name: Run playbook
       run: |
+          cd 05_Ansible/
           ansible-playbook playbook.yaml -i inventory -u azureuser  
       
