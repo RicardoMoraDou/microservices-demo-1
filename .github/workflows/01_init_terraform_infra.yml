@@ -34,12 +34,11 @@ jobs:
       - name: "Login AKS"
         uses: azure/aks-set-context@v1
         env:
-          CREDENTIALS: ${{ secrets.PROJECTIN_SP }}
+          CREDENTIALS: ${{ secrets.ACR_AKS_CREDENTIALS }}
         with:
           creds: ${{ env.CREDENTIALS }} # Azure credentials
           resource-group: 'rg-hipster-dev-eastus'
           cluster-name: 'aks-hipster-dev-eastus'
-        id: login   
 
       - name: 'Login Azure ACR'
         uses: azure/docker-login@v1
