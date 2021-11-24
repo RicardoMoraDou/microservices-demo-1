@@ -7,7 +7,7 @@ variable "environment" {
 variable "suffix" {
     description     = "A suffix used for all resources"
     type            = string
-    default         = "anthos"
+    default         = "hipster"
 }
 
 variable "location" {
