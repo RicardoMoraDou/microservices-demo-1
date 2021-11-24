@@ -1,14 +1,11 @@
 name: Init Services
 
 on: 
-  push:
-    branches: [ master ]
-    paths: 
-      - ".github/workflows/02_init_helm_workflow.yml"
-  pull_request:
-    branches: [ master ]
-    paths: 
-      - ".github/workflows/02_init_helm_workflow.yml"
+  workflow_run:
+    workflows: ["Init all Microservices Images"]
+    branches: [master]
+    types:
+      - completed
 
 jobs:
 
@@ -41,4 +38,4 @@ jobs:
 
     - name: Helm install hipsterstore chart
       run: | 
-          helm install hipsterstore ./helmHipster
+          helm install hipsterstore ./03_Helm_Charts
