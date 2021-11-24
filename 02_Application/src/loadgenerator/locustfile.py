@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2020 Google LLC
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,202 +13,70 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-Exercises the frontend endpoints for the system
-"""
 
+import random
+from locust import HttpLocust, TaskSet
 
-import json
-import logging
-from string import ascii_letters, digits
-from random import randint, random, choice
+products = [
+    '0PUK6V6EV0',
+    '1YMWWN1N4O',
+    '2ZYFJ3GM2N',
+    '66VCHSJNUP',
+    '6E92ZMYYFZ',
+    '9SIQT8TOJO',
+    'L9ECAV7KIM',
+    'LS4PSXUNUM',
+    'OLJCESPC7Z']
 
-from locust import HttpLocust, TaskSet, TaskSequence, task, seq_task, between
+def index(l):
+    l.client.get("/")
 
-MASTER_PASSWORD = "password"
+def setCurrency(l):
+    currencies = ['EUR', 'USD', 'JPY', 'CAD']
+    l.client.post("/setCurrency",
+        {'currency_code': random.choice(currencies)})
 
-TRANSACTION_ACCT_LIST = [str(randint(1111100000, 1111199999)) for _ in range(50)]
+def browseProduct(l):
+    l.client.get("/product/" + random.choice(products))
 
-def signup_helper(locust, username):
-    """
-    create a new user account in the system
-    succeeds if token was returned
-    """
-    userdata = {"username":username,
-                "password":MASTER_PASSWORD,
-                "password-repeat":MASTER_PASSWORD,
-                "firstname": username,
-                "lastname":"TestAccount",
-                "birthday":"01/01/2000",
-                "timezone":"82",
-                "address":"1021 Valley St",
-                "city":"Seattle",
-                "state":"WA",
-                "zip":"98103",
-                "ssn":"111-22-3333"}
-    with locust.client.post("/signup", data=userdata, catch_response=True) as response:
-        found_token = False
-        for r_hist in response.history:
-            found_token |= r_hist.cookies.get('token') is not None
-        if found_token:
-            response.success()
-            logging.debug("created user: %s", username)
-        else:
-            response.failure("login failed")
-        return found_token
+def viewCart(l):
+    l.client.get("/cart")
 
-def generate_username():
-    """
-    generates random 15 character
-    alphanumeric username
-    """
-    return ''.join(choice(ascii_letters + digits) for _ in range(15))
-class AllTasks(TaskSequence):
-    """
-    wrapper for UnauthenticatedTasks and AuthenticatedTasks sets
-    """
-    @seq_task(1)
-    class UnauthenticatedTasks(TaskSet):
-        """
-        set of tasks to run before obtaining an auth token
-        """
-        @task(5)
-        def view_login(self):
-            """
-            load the /login page
-            fails if already logged on (redirects to /home)
-            """
-            with self.client.get("/login", catch_response=True) as response:
-                for r_hist in response.history:
-                    if r_hist.status_code > 200 and r_hist.status_code < 400:
-                        response.failure("Got redirect")
+def addToCart(l):
+    product = random.choice(products)
+    l.client.get("/product/" + product)
+    l.client.post("/cart", {
+        'product_id': product,
+        'quantity': random.choice([1,2,3,4,5,10])})
 
-        @task(5)
-        def view_signup(self):
-            """
-            load the /signup page
-            fails if not logged on (redirects to /home)
-            """
-            with self.client.get("/signup", catch_response=True) as response:
-                for r_hist in response.history:
-                    if r_hist.status_code > 200 and r_hist.status_code < 400:
-                        response.failure("Got redirect")
+def checkout(l):
+    addToCart(l)
+    l.client.post("/cart/checkout", {
+        'email': 'someone@example.com',
+        'street_address': '1600 Amphitheatre Parkway',
+        'zip_code': '94043',
+        'city': 'Mountain View',
+        'state': 'CA',
+        'country': 'United States',
+        'credit_card_number': '4432-8015-6152-0454',
+        'credit_card_expiration_month': '1',
+        'credit_card_expiration_year': '2039',
+        'credit_card_cvv': '672',
+    })
 
-        @task(1)
-        def signup(self):
-            """
-            sends POST request to /signup to create a new user
-            on success, exits UnauthenticatedTasks
-            """
-            # sign up
-            new_username = generate_username()
-            success = signup_helper(self, new_username)
-            if success:
-                # go to AuthenticatedTasks
-                self.locust.username = new_username
-                self.interrupt()
+class UserBehavior(TaskSet):
 
-    @seq_task(2)
-    class AuthenticatedTasks(TaskSet):
-        """
-        set of tasks to run after obtaining an auth token
-        """
-        def on_start(self):
-            """
-            on start, deposit a large balance into each account
-            to ensure all payments are covered
-            """
-            self.deposit(1000000)
+    def on_start(self):
+        index(self)
 
-        @task(10)
-        def view_index(self):
-            """
-            load the / page
-            fails if not logged on (redirects to /login)
-            """
-            with self.client.get("/", catch_response=True) as response:
-                for r_hist in response.history:
-                    if r_hist.status_code > 200 and r_hist.status_code < 400:
-                        response.failure("Got redirect")
-
-        @task(10)
-        def view_home(self):
-            """
-            load the /home page (identical to /)
-            fails if not logged on (redirects to /login)
-            """
-            with self.client.get("/home", catch_response=True) as response:
-                for r_hist in response.history:
-                    if r_hist.status_code > 200 and r_hist.status_code < 400:
-                        response.failure("Got redirect")
-
-        @task(5)
-        def payment(self, amount=None):
-            """
-            POST to /payment, sending money to other account
-            """
-            if amount is None:
-                amount = random() * 1000
-            transaction = {"account_num": choice(TRANSACTION_ACCT_LIST),
-                           "amount": amount,
-                           "uuid": generate_username()}
-            with self.client.post("/payment",
-                                  data=transaction,
-                                  catch_response=True) as response:
-                if response.url is None or "failed" in response.url:
-                    response.failure("payment failed")
-
-        @task(5)
-        def deposit(self, amount=None):
-            """
-            POST to /deposit, depositing external money into account
-            """
-            if amount is None:
-                amount = random() * 1000
-            acct_info = {"account_num": choice(TRANSACTION_ACCT_LIST),
-                         "routing_num":"111111111"}
-            transaction = {"account": json.dumps(acct_info),
-                           "amount": amount,
-                           "uuid": generate_username()}
-            with self.client.post("/deposit",
-                                  data=transaction,
-                                  catch_response=True) as response:
-                if "failed" in response.url:
-                    response.failure("deposit failed")
-
-        @task(5)
-        def login(self):
-            """
-            sends POST request to /login with stored credentials
-            succeeds if a token was returned
-            """
-            with self.client.post("/login", {"username":self.locust.username,
-                                             "password":MASTER_PASSWORD},
-                                  catch_response=True) as response:
-                found_token = False
-                for r_hist in response.history:
-                    found_token |= r_hist.cookies.get('token') is not None
-                if found_token:
-                    response.success()
-                else:
-                    response.failure("login failed")
-
-        @task(1)
-        def logout(self):
-            """
-            sends a /logout POST request
-            fails if not logged in
-            exits AuthenticatedTasks
-            """
-            self.client.post("/logout")
-            self.locust.username = None
-            # go to UnauthenticatedTasks
-            self.interrupt()
-
+    tasks = {index: 1,
+        setCurrency: 2,
+        browseProduct: 10,
+        addToCart: 2,
+        viewCart: 3,
+        checkout: 1}
 
 class WebsiteUser(HttpLocust):
-    """
-    Locust class to simulate HTTP users
-    """
-    task_set = AllTasks
-    wait_time = between(1, 1)
+    task_set = UserBehavior
+    min_wait = 1000
+    max_wait = 10000
