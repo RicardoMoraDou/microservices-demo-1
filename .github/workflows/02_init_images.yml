@@ -41,6 +41,7 @@ jobs:
       run: |
            docker pull gcr.io/bank-of-anthos/balancereader:latest
            docker tag gcr.io/bank-of-anthos/balancereader:latest anthosequipofive1.azurecr.io/balancereader:latest
+           docker push anthosequipofive1.azurecr.io/balancereader:latest
 
 
 
