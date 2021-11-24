@@ -18,12 +18,12 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: "Login Azure ClI"
-      uses: azure/login@v1
+      uses: azure/login@latest
       with:
         creds: ${{ secrets.PROJECTIN_SP }}
         
     - name: 'Login Azure ACR'
-      uses: azure/docker-login@v1
+      uses: azure/docker-login@latest
       with:
           login-server: ${{ secrets.ACR_SERVER }}
           username: ${{ secrets.ACR_USER }}
@@ -31,58 +31,58 @@ jobs:
     
     - name: Build the Docker adservice
       run: |
-           docker build 02_Application/src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/adservice:v1
+           docker build 02_Application/src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/adservice:latest
 
 
     - name: Build the Docker cartservice
       run: |
-           docker build 02_Application/src/cartservice/. --tag ${{ secrets.ACR_SERVER }}/cartservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/cartservice:v1
+           docker build 02_Application/src/cartservice/. --tag ${{ secrets.ACR_SERVER }}/cartservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/cartservice:latest
 
 
     - name: Build the Docker checkoutservice
       run: |
-           docker build 02_Application/src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/checkoutservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/checkoutservice:v1
+           docker build 02_Application/src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/checkoutservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/checkoutservice:latest
 
     
     - name: Build the Docker currencyservice
       run: |
-           docker build 02_Application/src/currencyservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/currencyservice:v1
+           docker build 02_Application/src/currencyservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/currencyservice:latest
 
     - name: Build the Docker emailservice
       run: |
-           docker build 02_Application/src/emailservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/emailservice:v1
+           docker build 02_Application/src/emailservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/emailservice:latest
 
 
     
     - name: Build the Docker frontend
       run: |
-           docker build 02_Application/src/frontend/. --tag ${{ secrets.ACR_SERVER }}/frontend:v1
-           docker push ${{ secrets.ACR_SERVER }}/frontend:v1
+           docker build 02_Application/src/frontend/. --tag ${{ secrets.ACR_SERVER }}/frontend:latest
+           docker push ${{ secrets.ACR_SERVER }}/frontend:latest
     
     - name: Build the Docker paymentservice
       run: |
-           docker build 02_Application/src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
+           docker build 02_Application/src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/paymentservice:latest
 
     
     - name: Build the Docker productcatalogservice
       run: |
-           docker build 02_Application/src/productcatalogservice/. --tag ${{ secrets.ACR_SERVER }}/productcatalogservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/productcatalogservice:v1
+           docker build 02_Application/src/productcatalogservice/. --tag ${{ secrets.ACR_SERVER }}/productcatalogservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/productcatalogservice:latest
            
     
     - name: Build the Docker recommendationservice
       run: |
-           docker build 02_Application/src/recommendationservice/. --tag ${{ secrets.ACR_SERVER }}/recommendationservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/recommendationservice:v1
+           docker build 02_Application/src/recommendationservice/. --tag ${{ secrets.ACR_SERVER }}/recommendationservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/recommendationservice:latest
 
     
     - name: Build the Docker shippingservice
       run: |
-           docker build 02_Application/src/shippingservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/shippingservice:v1 
+           docker build 02_Application/src/shippingservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/shippingservice:latest 

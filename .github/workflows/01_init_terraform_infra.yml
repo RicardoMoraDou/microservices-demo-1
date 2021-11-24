@@ -68,7 +68,7 @@ jobs:
         continue-on-error: true
 
   acr_to_aks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
     needs: terraform_infra 
     steps:
 
