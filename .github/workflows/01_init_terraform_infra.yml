@@ -48,7 +48,7 @@ jobs:
       - name: Terraform apply
         run: |
           cd 01_Terraform_IaC
-          terraform destroy --auto-approve
+          terraform apply --auto-approve
         continue-on-error: true
 
       - name: Attach ACR to AKS    
