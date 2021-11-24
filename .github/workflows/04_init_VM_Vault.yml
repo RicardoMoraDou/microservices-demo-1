@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TF_VAR_SSH_KEY: ${{secrets.TF_VAR_SSH_KEY}}
+      TF_VAR_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY_VM}}
 
     steps:
     - uses: actions/checkout@v2
@@ -26,7 +26,7 @@ jobs:
     - name: Saving SSH
       run: |
           cd 05_Ansible/
-          echo ${{env.TF_VAR_SSH_KEY}} > id_rsa
+          echo ${{env.TF_VAR_SSH_KEY}} > id_rsa 
 
     - name: Run playbook
       run: |
