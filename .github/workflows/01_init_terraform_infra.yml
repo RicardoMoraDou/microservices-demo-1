@@ -20,6 +20,7 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
       ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
       TF_VAR_SSH_KEY: ${{secrets.TF_VAR_SSH_KEY}}
+      
 
 
     steps:
@@ -32,8 +33,10 @@ jobs:
 
       - name: "Login AKS"
         uses: azure/aks-set-context@v1
+        env:
+          CREDENTIALS: ${{ secrets.PROJECTIN_SP }}
         with:
-          creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+          creds: ${{ env.CREDENTIALS }} # Azure credentials
           resource-group: 'rg-hipster-dev-eastus'
           cluster-name: 'aks-hipster-dev-eastus'
         id: login   
