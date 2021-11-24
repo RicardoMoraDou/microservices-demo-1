@@ -15,17 +15,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Lint Ansible Playbook
-      uses: ansible/ansible-lint-action@master
-      with:
-        targets: ""
-
-  deployAnsible:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: ./.github/actions/ansible
-      with: 
-        playbook: playbook.yml -u azureuser 
-        inventory: 20.120.27.28
+    - name: Run playbook
+    uses: dawidd6/action-ansible-playbook@v2
+    with:
+      # Required, playbook filepath
+      playbook: playbook.yml
+      # Optional, directory where playbooks live
+      directory: 05_Ansible/.
+      # Optional, SSH private key
+      key: ${{secrets.TF_VAR_SSH_KEY}}
+      # Optional, literal inventory file contents
+      inventory: |
+        [all]
+        20.121.23.14
+      # Optional, additional flags to pass to ansible-playbook
+      options: |
+        -u azureuser
+      
