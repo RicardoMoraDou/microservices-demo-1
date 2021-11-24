@@ -30,20 +30,20 @@ jobs:
         with:
           creds: ${{ secrets.PROJECTIN_SP }}
 
-    - name: "Login AKS"
-      uses: azure/aks-set-context@v1
-      with:
-        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
-        resource-group: 'rg-hipster-dev-eastus'
-        cluster-name: 'aks-hipster-dev-eastus'
-      id: login   
+      - name: "Login AKS"
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+          resource-group: 'rg-hipster-dev-eastus'
+          cluster-name: 'aks-hipster-dev-eastus'
+        id: login   
 
-    - name: 'Login Azure ACR'
-      uses: azure/docker-login@v1
-      with:
-          login-server: ${{ secrets.ACR_SERVER }}
-          username: ${{ secrets.ACR_USER }}
-          password: ${{ secrets.ACR_PASS }}
+      - name: 'Login Azure ACR'
+        uses: azure/docker-login@v1
+        with:
+            login-server: ${{ secrets.ACR_SERVER }}
+            username: ${{ secrets.ACR_USER }}
+            password: ${{ secrets.ACR_PASS }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
