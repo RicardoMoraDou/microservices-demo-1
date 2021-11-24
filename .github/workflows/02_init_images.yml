@@ -27,65 +27,23 @@ jobs:
     - name: 'Login Azure ACR'
       uses: azure/docker-login@v1
       with:
-          login-server: ${{ secrets.ACR_SERVER }}
+          login-server: anthosequipofive1.azurecr.io
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PASS }}
     
-    - name: Build the Docker adservice
+    - name: Build the Docker accounts-db
       run: |
-           docker build 02_Application/src/adservice/. --tag ${{ secrets.ACR_SERVER }}/adservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/adservice:v1
+           docker build 02_Application/src/accounts-db/. --tag anthosequipofive1.azurecr.io/accounts-db:latest
+           docker push anthosequipofive1.azurecr.io/accounts-db:latest
 
 
-    - name: Build the Docker cartservice
+    - name: Build the Docker balancereader
       run: |
-           docker build 02_Application/src/cartservice/. --tag ${{ secrets.ACR_SERVER }}/cartservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/cartservice:v1
+           docker pull gcr.io/bank-of-anthos/balancereader:latest
+           docker tag gcr.io/bank-of-anthos/balancereader:latest anthosequipofive1.azurecr.io/balancereader:latest
 
 
-    - name: Build the Docker checkoutservice
-      run: |
-           docker build 02_Application/src/checkoutservice/. --tag ${{ secrets.ACR_SERVER }}/checkoutservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/checkoutservice:v1
 
-    
-    - name: Build the Docker currencyservice
-      run: |
-           docker build 02_Application/src/currencyservice/. --tag ${{ secrets.ACR_SERVER }}/currencyservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/currencyservice:v1
-
-    - name: Build the Docker emailservice
-      run: |
-           docker build 02_Application/src/emailservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/emailservice:v1
 
 
     
-    - name: Build the Docker frontend
-      run: |
-           docker build 02_Application/src/frontend/. --tag ${{ secrets.ACR_SERVER }}/frontend:v1
-           docker push ${{ secrets.ACR_SERVER }}/frontend:v1
-
-    
-    - name: Build the Docker paymentservice
-      run: |
-           docker build 02_Application/src/paymentservice/. --tag ${{ secrets.ACR_SERVER }}/paymentservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/paymentservice:v1
-
-    
-    - name: Build the Docker productcatalogservice
-      run: |
-           docker build 02_Application/src/productcatalogservice/. --tag ${{ secrets.ACR_SERVER }}/productcatalogservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/productcatalogservice:v1
-           
-    
-    - name: Build the Docker recommendationservice
-      run: |
-           docker build 02_Application/src/recommendationservice/. --tag ${{ secrets.ACR_SERVER }}/recommendationservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/recommendationservice:v1
-
-    
-    - name: Build the Docker shippingservice
-      run: |
-           docker build 02_Application/src/shippingservice/. --tag ${{ secrets.ACR_SERVER }}/shippingservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/shippingservice:v1 
