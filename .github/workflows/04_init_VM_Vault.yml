@@ -1,0 +1,38 @@
+name: Init VM Vault
+
+on: 
+#  workflow_run:
+#    workflows: ["Init Services"]
+#    branches: [master]
+#    types:
+#      - completed
+
+  push:
+    branches: [ master ]
+    paths: 
+      - .github/workflows/04_init_VM_Vault.yml" 
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - .github/workflows/04_init_VM_Vault.yml" 
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      uses: actions/checkout@v2
+    - name: Lint Ansible Playbook
+      uses: ansible/ansible-lint-action@master
+      with:
+        targets: ""
+
+  deployAnsible:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ./.github/actions/ansible
+      with: 
+        playbook: playbook.yml -u azureuser
+        inventory: 20.120.27.28
