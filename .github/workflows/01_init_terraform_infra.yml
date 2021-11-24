@@ -68,7 +68,7 @@ jobs:
 #          terraform apply --auto-approve
 #        continue-on-error: true
 
-  ACR to AKS:
+  acr_to_aks:
     runs-on: ubuntu-latest
     steps:
 
