@@ -68,6 +68,32 @@ jobs:
 #          terraform apply --auto-approve
 #        continue-on-error: true
 
-      - name: Attach ACR to AKS    
+
+
+jobs:
+  ACR to AKS:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Login to AKS
+        uses: azure/aks-set-context@v1
+        env:
+          CREDENTIALS: ${{ secrets.ACR_AKS_CREDENTIALS }}
+        with:
+          creds: ${{ env.CREDENTIALS }}
+          resource-group: rg-hipster-dev-eastus
+          cluster-name: aks-hipster-dev-eastus
+      
+      - name: "Login to Azure CLI"
         run: |
-          az aks update -n aks-hipster-dev-eastus -g rg-hipster-dev-eastus --attach-acr hipsterequipofive1 
+          az login -u ricardo.mora@digitalonus.com -p DreamTeam1
+
+      - name: Attaching Cluster
+        run: |
+          az aks update -n aks-hipster-dev-eastus -g mrg-hipster-dev-eastus --attach-acr hipsterequipofive1 
+
+      - name: Checking the ACR
+        run: |
+          az aks check-acr -g rg-hipster-dev-eastus -n aks-hipster-dev-eastus  --acr hipsterequipofive1.azurecr.io
