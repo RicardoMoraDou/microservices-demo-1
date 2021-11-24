@@ -51,11 +51,6 @@ jobs:
           terraform apply --auto-approve
         continue-on-error: true
 
-      - name: Terraform Format    
-        run: |
-          cd 01_Terraform_IaC
-          terraform fmt -check 
-
       - name: Attach ACR to AKS    
         run: |
           az aks update -n aks-hipster-dev-eastus -g rg-hipster-dev-eastus --attach-acr hipsterequipofive1
