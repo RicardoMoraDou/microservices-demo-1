@@ -53,4 +53,4 @@ jobs:
 
       - name: Attach ACR to AKS    
         run: |
-          az aks update -n aks-hipster-dev-eastus -g rg-hipster-dev-eastus --attach-acr hipsterequipofive1
+          az aks update -n aks-hipster-dev-eastus -g rg-hipster-dev-eastus --attach-acr hipsterequipofive1 
