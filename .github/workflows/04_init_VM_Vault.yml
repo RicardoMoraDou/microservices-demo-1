@@ -3,12 +3,10 @@ name: Init VM Vault
 on: 
   push:
     branches: [ master ]
-    paths: 
-      - .github/workflows/04_init_VM_Vault.yml" 
+
   pull_request:
     branches: [ master ]
-    paths: 
-      - .github/workflows/04_init_VM_Vault.yml" 
+
 
 jobs:
 
@@ -16,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Lint Ansible Playbook
       uses: ansible/ansible-lint-action@master
       with:
