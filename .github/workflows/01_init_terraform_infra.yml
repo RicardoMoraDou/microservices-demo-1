@@ -23,7 +23,7 @@ jobs:
       TF_VAR_SSH_KEY: ${{secrets.TF_VAR_SSH_KEY}}
       
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2 
 
       - name: "Login Azure ClI"
         uses: azure/login@v1
