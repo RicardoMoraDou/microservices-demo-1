@@ -1,14 +1,11 @@
-name: Init all Images 
+name: Init all Microservices Images 
 
-on: 
-  push:
-    branches: [ master ] 
-    paths: 
-      - ".github/workflows/02_init_images.yml" 
-  pull_request:
-    branches: [ master ]
-    paths: 
-      - ".github/workflows/02_init_images.yml"
+on:
+  workflow_run:
+    workflows: ["Init Infrastructure"]
+    branches: [master]
+    types:
+      - completed
 
 jobs:
 
@@ -65,7 +62,6 @@ jobs:
       run: |
            docker build 02_Application/src/frontend/. --tag ${{ secrets.ACR_SERVER }}/frontend:v1
            docker push ${{ secrets.ACR_SERVER }}/frontend:v1
-
     
     - name: Build the Docker paymentservice
       run: |
