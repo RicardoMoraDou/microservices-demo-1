@@ -30,4 +30,4 @@ WORKDIR /app
 COPY --from=builder /app .
 
 EXPOSE 9555
-ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]    
+ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]     
