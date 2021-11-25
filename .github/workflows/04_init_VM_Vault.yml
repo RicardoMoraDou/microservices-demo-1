@@ -25,7 +25,7 @@ jobs:
       env:
         TF_VAR_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY_VM}}
       run: |
-          ls
+          cd 05_Ansible/
           echo $TF_VAR_SSH_KEY > id_rsa 
           cat id_rsa
 
