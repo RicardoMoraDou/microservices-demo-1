@@ -32,7 +32,6 @@ jobs:
       uses: azure/setup-helm@v1
       with:
         version: latest # default is latest stable
-      id: install
 
     - name: Install Kubectl 
       uses: azure/setup-kubectl@v1  
