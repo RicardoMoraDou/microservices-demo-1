@@ -27,7 +27,7 @@ jobs:
       run: |
           cd 05_Ansible/
           echo $TF_VAR_SSH_KEY > id_rsa 
-          cat id_rsa
+          sudo chmod 600 id_rsa
 
     - name: Run playbook
       run: |
