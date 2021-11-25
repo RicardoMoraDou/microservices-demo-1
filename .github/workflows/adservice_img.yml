@@ -3,7 +3,6 @@ name: Adservice Image
 on:
   pull_request:
     branches: [ master ]
-    types: [ closed ]
     paths: 
       - "02_Application/src/adservice/*"
 
@@ -11,7 +10,7 @@ jobs:
 
   build:
 
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     
     steps:
@@ -31,7 +30,7 @@ jobs:
     
     - name: Deleted Img in ACR
       run: |
-          az acr repository delete --name hipsterequipofive1 --image adservice:latest -y
+          az acr repository delete --name hipsterequipofive1 --image adservice:v1 -y
 
     - name: Build the Docker images
       run: |
