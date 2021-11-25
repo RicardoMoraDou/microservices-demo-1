@@ -30,5 +30,24 @@ jobs:
           sudo chmod 600 id_rsa
           cat id_rsa 
 
+    - name: Run playbook
+      run: |
+          cd 05_Ansible/
+          ansible-playbook playbook.yaml -i inventory -u azureuser  --private-key id_rsa
+    
+    - name: Saving Tokens
+      run: |
+          cd 05_Ansible/rootKey
+          cat rootkey
+
+    - name: Saving UnsealKeys
+      run: |
+          cd 05_Ansible/unsealKey
+          cat unseal_key_0
+          cat unseal_key_1
+          cat unseal_key_2
+          cat unseal_key_3
+          cat unseal_key_4
+
 
 
