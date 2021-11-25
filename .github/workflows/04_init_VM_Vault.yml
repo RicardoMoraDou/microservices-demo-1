@@ -12,8 +12,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    env:
-      TF_VAR_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY_VM}}
 
     steps:
     - uses: actions/checkout@v2
@@ -24,8 +22,11 @@ jobs:
         sudo apt-get install ansible -y
 
     - name: Saving SSH
+      env:
+        TF_VAR_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY_VM}}
       run: |
           ls
           echo ${{env.TF_VAR_SSH_KEY}} > id_rsa 
+          cat id_rsa
 
 
