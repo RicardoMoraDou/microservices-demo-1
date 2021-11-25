@@ -3,7 +3,6 @@ name: Adservice Chart
 on:
   workflow_run:
     workflows: ["Adservice Image"]
-    branches: [master]
     types:
       - completed
 

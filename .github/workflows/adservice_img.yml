@@ -3,6 +3,7 @@ name: Adservice Image
 on:
   pull_request:
     branches: [ master ]
+    types: [ closed ]
     paths: 
       - "02_Application/src/adservice/*"
 
