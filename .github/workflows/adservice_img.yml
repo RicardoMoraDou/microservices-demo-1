@@ -1,7 +1,6 @@
 name: Adservice Image 
 
 on:
-
   pull_request:
     branches: [ master ]
     paths: 
