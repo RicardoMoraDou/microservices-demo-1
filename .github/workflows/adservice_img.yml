@@ -2,10 +2,6 @@ name: Adservice Image
 
 on:
 
-  push:
-    branches: [ master ]
-    paths: 
-      - "02_Application/src/adservice/*"
   pull_request:
     branches: [ master ]
     paths: 
