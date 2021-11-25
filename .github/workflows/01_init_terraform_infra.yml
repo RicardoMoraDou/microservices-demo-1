@@ -83,7 +83,7 @@ jobs:
           resource-group: rg-hipster-dev-eastus
           cluster-name: aks-hipster-dev-eastus
       
-      - name: "Login to Azure CLI"
+      - name: "Login to Azure CLI" 
         run: |
           az login -u ricardo.mora@digitalonus.com -p DreamTeam1
 

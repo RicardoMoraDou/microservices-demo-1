@@ -1,11 +1,11 @@
 name: Init VM Vault 
 
 on: 
-  push:
-    branches: [ master ]
-
-  pull_request:
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Init Services"]
+    branches: [master]
+    types:
+      - completed
 
 
 jobs:
