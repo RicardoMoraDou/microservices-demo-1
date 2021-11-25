@@ -23,12 +23,12 @@ jobs:
 
     - name: Saving SSH
       env:
-        TF_VAR_SSH_KEY: ${{secrets.SSH_PRIVATE_KEY_VM}}
+        gpg_key: ${{secrets.GPG_PASS}}
       run: |
           cd 05_Ansible/
-          echo $TF_VAR_SSH_KEY > ~/.ssh/id_rsa 
-          sudo chmod 600 ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
+          gpg --quiet --batch --yes --decrypt --passphrase="$gpg_key" --output id_rsa private.key.gpg
+          sudo chmod 600 id_rsa
+          cat id_rsa
 
 
 
