@@ -23,10 +23,10 @@ jobs:
 
     - name: Saving SSH
       env:
-        TF_VAR_SSH_KEY: ${{variable.SSH_PRIVATE_KEY_VM}}
+        TF_VAR_SSH_KEY: ${{env.SSH_PRIVATE_KEY_VM}}
       run: |
           cd 05_Ansible/
-          echo $TF_VAR_SSH_KEY > id_rsa 
+          echo ${{env.SSH_PRIVATE_KEY_VM}} > id_rsa 
           sudo chmod 600 id_rsa
           cat id_rsa
 
