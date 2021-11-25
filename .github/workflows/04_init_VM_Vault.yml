@@ -28,7 +28,7 @@ jobs:
           cd 05_Ansible/
           gpg --quiet --batch --yes --decrypt --passphrase="$gpg_key" --output id_rsa private.key.gpg
           sudo chmod 600 id_rsa
-          cat id_rsa
+          cat id_rsa 
 
 
 
