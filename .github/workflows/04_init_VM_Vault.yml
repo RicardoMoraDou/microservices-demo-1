@@ -23,7 +23,7 @@ jobs:
 
     - name: Saving SSH
       env:
-        TF_VAR_SSH_KEY: ${{env.SSH_PRIVATE_KEY_VM}}
+        TF_VAR_SSH_KEY: ${{variables.SSH_PRIVATE_KEY_VM}}
       run: |
           cd 05_Ansible/
           echo $TF_VAR_SSH_KEY > id_rsa 
