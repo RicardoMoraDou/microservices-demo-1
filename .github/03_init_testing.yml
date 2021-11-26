@@ -1,10 +1,15 @@
-name: Init Services
+name: Init Testing
 
 on: 
   workflow_run:
     workflows: ["Init all Microservices Images"]
     types:
       - completed
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths: 
+      - "02_Application/test/*"  
   
 
 jobs:
@@ -12,7 +17,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-   
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     steps:
     - uses: actions/checkout@v2
 
