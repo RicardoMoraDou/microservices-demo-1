@@ -3,7 +3,6 @@ name: Init VM Vault
 on: 
   workflow_run:
     workflows: ["Init Services"]
-    branches: [master]
     types:
       - completed
 

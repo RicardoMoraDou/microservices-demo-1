@@ -3,9 +3,9 @@ name: Init Services
 on: 
   workflow_run:
     workflows: ["Init all Microservices Images"]
-    branches: [master]
     types:
       - completed
+  
 
 jobs:
 

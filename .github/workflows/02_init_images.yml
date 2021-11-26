@@ -3,7 +3,6 @@ name: Init all Microservices Images
 on:
   workflow_run:
     workflows: ["Init Infrastructure"]
-    branches: [master]
     types:
       - completed
 

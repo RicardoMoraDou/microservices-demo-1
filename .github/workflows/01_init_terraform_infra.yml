@@ -5,7 +5,7 @@ on:
     branches: [ master ]
     types: [ closed ]
     paths: 
-      - ".github/workflows/01_init_terraform_infra.yml" 
+      - ".github/workflows/01_init_terraform_infra.yml"  
 
 jobs:
 
