@@ -1,12 +1,9 @@
-name: email service
+name: Emailservice Image 
 
 on:
-  push:
-    branches: [ master ]
-    paths: 
-      - "02_Application/src/emailservice/*"
   pull_request:
     branches: [ master ]
+    types: [ closed ]
     paths: 
       - "02_Application/src/emailservice/*"
 
@@ -14,26 +11,31 @@ jobs:
 
   build:
 
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-   
+    
     steps:
     - uses: actions/checkout@v2
 
-    # Login Azure ClI
-    - uses: azure/login@v1
+    - name: Login Azure CLI
+      uses: azure/login@v1
       with:
         creds: ${{ secrets.PROJECTIN_SP }}
         
-    # Login Azure ACR
-    - uses: azure/docker-login@v1
+    - name: Login Azure ACR
+      uses: azure/docker-login@v1
       with:
-          login-server: ${{ secrets.ACR_SERVER }} # default: index.docker.io
+          login-server: ${{ secrets.ACR_SERVER }}
           username: ${{ secrets.ACR_USER }}
           password: ${{ secrets.ACR_PASS }}
     
+    - name: Deleted Img in ACR
+      run: |
+          az acr repository delete --name hipsterequipofive1 --image emailservice:latest -y
+
     - name: Build the Docker images
       run: |
-           docker build 02_Application/src/emailservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:v1
-           docker push ${{ secrets.ACR_SERVER }}/emailservice:v1
+           docker build 02_Application/src/emailservice/. --tag ${{ secrets.ACR_SERVER }}/emailservice:latest
+           docker push ${{ secrets.ACR_SERVER }}/emailservice:latest
           
       

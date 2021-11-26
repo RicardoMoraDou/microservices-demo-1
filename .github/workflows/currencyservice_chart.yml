@@ -1,12 +1,12 @@
-name: Adservice Chart 
+name: currencyservice Chart 
 
 on:
   workflow_run:
-    workflows: ["Adservice Image"]
+    workflows: ["Currencyservice Image"]
     types:
       - completed
     paths: 
-      - "03_Helm_Charts/templates/adservice.yaml"
+      - "03_Helm_Charts/templates/currencyservice.yaml"
 
 jobs:
 
@@ -41,8 +41,8 @@ jobs:
         version: latest # default is latest stable
       id: install
 
-    - name: Update New Adservice
+    - name: Update New currencyservice
       run: |
-           kubectl set image deployment/adservice server=${{ secrets.ACR_SERVER }}/adservice:latest 
+           kubectl set image deployment/currencyservice server=${{ secrets.ACR_SERVER }}/currencyservice:latest 
           
       
