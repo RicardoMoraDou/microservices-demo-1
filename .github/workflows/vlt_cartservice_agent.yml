@@ -1,0 +1,98 @@
+name: Emailservice Chart 
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    #paths: 
+    #  - "03_Helm_Charts/templates/emailservice.yaml"
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+
+    - name: "Login AKS"
+      uses: azure/aks-set-context@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+        resource-group: 'rg-hipster-dev-eastus'
+        cluster-name: 'aks-hipster-dev-eastus' 
+      id: login   
+    
+    - name: 'Install helm'
+      uses: azure/setup-helm@v1
+      with:
+        version: latest # default is latest stable
+
+    - name: Install Kubectl 
+      uses: azure/setup-kubectl@v1  
+      with:
+        version: latest # default is latest stable
+      id: install
+
+    - name: Init Vault Pod
+      run: |
+          kubectl exec -ti vault-0 -- vault operator init
+          kubectl exec -ti vault-0 -- vault operator unseal
+
+    - name: Enter Pod Vault
+      run: |
+          kubectl exec --stdin --tty vault-0  -- /bin/sh
+
+    - name: Copy Configation file
+      run: |
+          cd /home/vault/
+          tee vault-config.hcl <<EOF
+          pid_file = "./pidfile"
+
+          vault {
+                  address = "http://20.112.193.68:8200"
+          }
+
+          auto_auth {
+                  method "approle" {
+                      mount_path = "auth/approle"
+                      config = {
+                          role_id_file_path = "/tmp/role-id"
+                          secret_id_file_path = "/tmp/secret-id"
+                          remove_secret_id_file_after_reading = false
+                      }
+                  }
+
+                  sink "file" {
+                          config = {
+                                  path = "/tmp/.vault-token"
+                          }
+                  }
+          }
+
+          template {
+            source      = "/home/vault/dbcredential.kv.ctmpl"
+            destination = "/home/vault/db.credential"
+          }  
+          EOF
+          
+          tee dbcredential.kv.ctmpl <<EOF
+          {{ with secret "kv/data/secret/mongodb" }}
+          User={{ .Data.data.user }};Database={{ .Data.data.password }};
+          {{ end }}
+          EOF
+
+
+
+
+
+
+
+          
+      
