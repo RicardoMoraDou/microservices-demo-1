@@ -1,13 +1,12 @@
-name: Adservice Chart 
+name: Cartservice Chart 
 
 on:
   workflow_run:
-    workflows: ["Adservice Image"]
+    workflows: ["Cartservice Image"]
     types:
       - completed
     paths: 
-      - "03_Helm_Charts/templates/adservice.yaml"
-
+      - "03_Helm_Charts/templates/cartservice.yaml"
 jobs:
 
   build:
@@ -39,10 +38,9 @@ jobs:
       uses: azure/setup-kubectl@v1  
       with:
         version: latest # default is latest stable
-      id: install
 
-    - name: Update New Adservice
+    - name: Update New Cartservice
       run: |
-           kubectl set image deployment/adservice server=${{ secrets.ACR_SERVER }}/adservice:latest 
+           kubectl set image deployment/cartservice server=${{ secrets.ACR_SERVER }}/cartservice:latest 
           
       

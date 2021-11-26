@@ -1,12 +1,12 @@
-name: Adservice Chart 
+name: emailservice Chart 
 
 on:
   workflow_run:
-    workflows: ["Adservice Image"]
+    workflows: ["Emailservice Image"]
     types:
       - completed
     paths: 
-      - "03_Helm_Charts/templates/adservice.yaml"
+      - "03_Helm_Charts/templates/emailservice.yaml"
 
 jobs:
 
@@ -41,8 +41,8 @@ jobs:
         version: latest # default is latest stable
       id: install
 
-    - name: Update New Adservice
+    - name: Update New emailservice
       run: |
-           kubectl set image deployment/adservice server=${{ secrets.ACR_SERVER }}/adservice:latest 
+           kubectl set image deployment/emailservice server=${{ secrets.ACR_SERVER }}/emailservice:latest 
           
       

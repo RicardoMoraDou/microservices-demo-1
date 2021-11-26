@@ -1,12 +1,12 @@
-name: Adservice Chart 
+name: recommendationservice Chart 
 
 on:
   workflow_run:
-    workflows: ["Adservice Image"]
+    workflows: ["Recommendationservice Image"]
     types:
       - completed
     paths: 
-      - "03_Helm_Charts/templates/adservice.yaml"
+      - "03_Helm_Charts/templates/recommendationservice.yaml"
 
 jobs:
 
@@ -41,8 +41,8 @@ jobs:
         version: latest # default is latest stable
       id: install
 
-    - name: Update New Adservice
+    - name: Update New recommendationservice
       run: |
-           kubectl set image deployment/adservice server=${{ secrets.ACR_SERVER }}/adservice:latest 
+           kubectl set image deployment/recommendationservice server=${{ secrets.ACR_SERVER }}/recommendationservice:latest 
           
       
