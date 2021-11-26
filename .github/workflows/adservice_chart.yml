@@ -27,7 +27,7 @@ jobs:
       with:
         creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
         resource-group: 'rg-hipster-dev-eastus'
-        cluster-name: 'aks-hipster-dev-eastus'
+        cluster-name: 'aks-hipster-dev-eastus' 
       id: login   
     
     - name: 'Install helm'
