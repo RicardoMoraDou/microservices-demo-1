@@ -30,7 +30,7 @@ jobs:
       - name: "Login AKS"
         uses: azure/aks-set-context@v1
         env:
-          CREDENTIALS: ${{ secrets.ACR_AKS_CREDENTIALS }}
+          CREDENTIALS: ${{ secrets.ACR_AKS_CREDENTIALS }} 
         with:
           creds: ${{ env.CREDENTIALS }} # Azure credentials
           resource-group: 'rg-hipster-dev-eastus'
