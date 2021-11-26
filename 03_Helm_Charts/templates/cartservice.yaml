@@ -57,6 +57,19 @@ spec:
   selector:
     app: cartservice
   ports:
-  - name: grpc
+  - name: http
+    port: 7070
+    targetPort: 7070
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - name: http
     port: 7070
     targetPort: 7070
