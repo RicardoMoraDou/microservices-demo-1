@@ -5,6 +5,10 @@ on:
     workflows: ["Init Services"]
     types:
       - completed
+  push:
+    branches: [ master ]
+    paths: 
+      - "05_Ansible/*"
 
 jobs:
 

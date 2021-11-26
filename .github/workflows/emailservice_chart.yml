@@ -5,6 +5,8 @@ on:
     workflows: ["Emailservice Image"]
     types:
       - completed
+  push:
+    branches: [ master ]
     paths: 
       - "03_Helm_Charts/templates/emailservice.yaml"
 
