@@ -25,4 +25,4 @@ RUN apk add --no-cache \
     icu
 WORKDIR /app
 COPY --from=builder /cartservice .
-ENTRYPOINT ["./cartservice", "start"] 
+ENTRYPOINT ["./cartservice", "start"]  
