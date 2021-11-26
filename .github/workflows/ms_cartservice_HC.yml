@@ -1,0 +1,46 @@
+name: Cartservice Chart 
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths: 
+      - "03_Helm_Charts/templates/cartservice.yaml"
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "Login Azure ClI"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }}
+
+    - name: "Login AKS"
+      uses: azure/aks-set-context@v1
+      with:
+        creds: ${{ secrets.PROJECTIN_SP }} # Azure credentials
+        resource-group: 'rg-hipster-dev-eastus'
+        cluster-name: 'aks-hipster-dev-eastus'
+      id: login   
+    
+    - name: 'Install helm'
+      uses: azure/setup-helm@v1
+      with:
+        version: latest # default is latest stable
+
+    - name: Install Kubectl 
+      uses: azure/setup-kubectl@v1  
+      with:
+        version: latest # default is latest stable
+
+    - name: Update New Cartservice
+      run: |
+          cd 03_Helm_Charts/templates/
+          kubectl apply -f cartservice.yml
+          
+      

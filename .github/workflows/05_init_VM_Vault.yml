@@ -1,0 +1,45 @@
+name: Init VM Vault
+
+on: 
+  workflow_run:
+    workflows: ["Init Services"]
+    types:
+      - completed
+  push:
+    branches: [ master ]
+    paths: 
+      - "05_Ansible/*"
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Installing Ansible
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install ansible -y
+
+    - name: Saving SSH
+      env:
+        gpg_key: ${{secrets.GPG_PASS}}
+      run: |
+          cd 05_Ansible/
+          gpg --quiet --batch --yes --decrypt --passphrase="$gpg_key" --output id_rsa private.key.gpg
+          sudo chmod 600 id_rs
+
+    - name: Run playbook
+      run: |
+          cd 05_Ansible/
+          ansible-playbook playbook.yaml -i inventory -u azureuser  --private-key id_rsa
+    
+    - name: Saving Tokens
+      run: |
+          cd 05_Ansible/rootKey
+          cat rootkey
+
+
+

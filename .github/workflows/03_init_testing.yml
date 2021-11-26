@@ -1,0 +1,23 @@
+name: Init Testing
+
+on: 
+  workflow_run:
+    workflows: ["Init all Microservices Images"]
+    types:
+      - completed 
+  push:
+    branches: [ master ]
+    paths: 
+      - "02_Application/test/*"
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Sleep for 30 seconds
+      run: sleep 30s
+      shell: bash
