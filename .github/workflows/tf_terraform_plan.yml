@@ -1,0 +1,56 @@
+name: Terraform Plan 
+
+on: 
+  pull_request:
+    branches: [ master ]
+    paths: 
+      - "01_Terraform_IaC/**" 
+
+jobs:
+
+  terraform_plan:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
+      TF_VAR_SSH_KEY: ${{secrets.TF_VAR_SSH_KEY}}
+      
+    steps:
+      - uses: actions/checkout@v2 
+
+      - name: "Login Azure ClI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PROJECTIN_SP }}
+
+      - name: "Login AKS"
+        uses: azure/aks-set-context@v1
+        env:
+          CREDENTIALS: ${{ secrets.ACR_AKS_CREDENTIALS }}
+        with:
+          creds: ${{ env.CREDENTIALS }} # Azure credentials
+          resource-group: 'rg-hipster-dev-eastus'
+          cluster-name: 'aks-hipster-dev-eastus'
+
+      - name: 'Login Azure ACR'
+        uses: azure/docker-login@v1
+        with:
+            login-server: ${{ secrets.ACR_SERVER }}
+            username: ${{ secrets.ACR_USER }}
+            password: ${{ secrets.ACR_PASS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd 01_Terraform_IaC
+          terraform init
+
+      - name: Terraform plan
+        run: |
+          cd 01_Terraform_IaC
+          terraform plan
