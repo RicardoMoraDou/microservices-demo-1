@@ -1,7 +1,7 @@
 name: Init Infrastructure  
 
 on: 
-  pull_request: 
+  push: 
     branches: [ master ]
 
 
@@ -9,7 +9,6 @@ jobs:
 
   terraform_infra:
     runs-on: ubuntu-latest
-
     env:
       ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
