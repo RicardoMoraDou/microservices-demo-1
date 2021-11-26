@@ -3,15 +3,13 @@ name: Init Infrastructure
 on: 
   pull_request: 
     branches: [ master ]
-    types: [ closed ]
-    paths: 
-      - ".github/workflows/01_init_terraform_infra.yml"  
+
 
 jobs:
 
   terraform_infra:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+
     env:
       ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
