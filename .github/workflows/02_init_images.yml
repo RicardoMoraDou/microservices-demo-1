@@ -5,6 +5,9 @@ on:
     workflows: ["Init Infrastructure"]
     types:
       - completed
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
 
 jobs:
 
