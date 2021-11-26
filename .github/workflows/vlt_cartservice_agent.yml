@@ -42,8 +42,8 @@ jobs:
 
     - name: Init Vault Pod
       run: |
-          kubectl exec -ti vault-0 -- vault operator init
-          kubectl exec -ti vault-0 -- vault operator unseal
+          kubectl exec -ti hipsterstore-vault-0 -- vault operator init
+          kubectl exec -ti hipsterstore-vault-0 -- vault operator unseal
 
     - name: Enter Pod Vault
       run: |
@@ -56,7 +56,7 @@ jobs:
           pid_file = "./pidfile"
 
           vault {
-                  address = "http://20.112.193.68:8200"
+                  address = "http://20.115.124.120:8200"
           }
 
           auto_auth {
@@ -88,7 +88,7 @@ jobs:
           {{ end }}
           EOF
 
-
+          vault agent -config=/home/vault/vault-config.hcl
 
 
 
