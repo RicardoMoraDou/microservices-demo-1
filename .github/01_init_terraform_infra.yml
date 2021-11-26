@@ -1,7 +1,7 @@
 name: Init Infrastructure  
 
 on: 
-  pull_request:
+  pull_request: 
     branches: [ master ]
     types: [ closed ]
     paths: 
