@@ -2,7 +2,7 @@ name: Init Infrastructure
 
 on: 
   push: 
-    branches: [ master ]
+    branches: [ master ] 
 
 
 jobs:
