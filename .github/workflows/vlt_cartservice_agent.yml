@@ -51,42 +51,42 @@ jobs:
 
     - name: Copy Configation file
       run: |
-      cd /home/vault/
-      tee vault-config.hcl <<EOF
-      pid_file = "./pidfile"
+          cd /home/vault/
+          tee vault-config.hcl <<EOF
+          pid_file = "./pidfile"
 
-      vault {
-              address = "http://20.112.193.68:8200"
-      }
+          vault {
+                  address = "http://20.112.193.68:8200"
+          }
 
-      auto_auth {
-              method "approle" {
-                  mount_path = "auth/approle"
-                  config = {
-                      role_id_file_path = "/tmp/role-id"
-                      secret_id_file_path = "/tmp/secret-id"
-                      remove_secret_id_file_after_reading = false
-                  }
-              }
-
-              sink "file" {
+          auto_auth {
+                  method "approle" {
+                      mount_path = "auth/approle"
                       config = {
-                              path = "/tmp/.vault-token"
+                          role_id_file_path = "/tmp/role-id"
+                          secret_id_file_path = "/tmp/secret-id"
+                          remove_secret_id_file_after_reading = false
                       }
-              }
-      }
+                  }
 
-      template {
-        source      = "/home/vault/dbcredential.kv.ctmpl"
-        destination = "/home/vault/db.credential"
-      }  
-      EOF
-      
-      tee dbcredential.kv.ctmpl <<EOF
-      {{ with secret "kv/data/secret/mongodb" }}
-      User={{ .Data.data.user }};Database={{ .Data.data.password }};
-      {{ end }}
-      EOF
+                  sink "file" {
+                          config = {
+                                  path = "/tmp/.vault-token"
+                          }
+                  }
+          }
+
+          template {
+            source      = "/home/vault/dbcredential.kv.ctmpl"
+            destination = "/home/vault/db.credential"
+          }  
+          EOF
+          
+          tee dbcredential.kv.ctmpl <<EOF
+          {{ with secret "kv/data/secret/mongodb" }}
+          User={{ .Data.data.user }};Database={{ .Data.data.password }};
+          {{ end }}
+          EOF
 
 
 
