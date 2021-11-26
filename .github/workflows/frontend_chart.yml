@@ -5,6 +5,8 @@ on:
     workflows: ["Frontend Image"]
     types:
       - completed
+  push:
+    branches: [ master ]
     paths: 
       - "03_Helm_Charts/templates/frontend.yaml"
 

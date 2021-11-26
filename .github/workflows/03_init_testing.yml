@@ -5,7 +5,10 @@ on:
     workflows: ["Init all Microservices Images"]
     types:
       - completed 
-
+  push:
+    branches: [ master ]
+    paths: 
+      - "02_Application/test/*"
 jobs:
 
   build:
