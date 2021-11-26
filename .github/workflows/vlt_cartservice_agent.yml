@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: [ master ]
     types: [ closed ]
-    paths: 
-      - "03_Helm_Charts/templates/emailservice.yaml"
+    #paths: 
+    #  - "03_Helm_Charts/templates/emailservice.yaml"
 
 jobs:
 
