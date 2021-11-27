@@ -1,0 +1,20 @@
+---
+# tasks file for redis_plugin
+- name: Clone plugin repo
+  git:
+    repo: https://github.com/fhitchen/vault-plugin-database-redis
+    dest: /home/azureuser/
+
+- name: build vault-redis plugin
+  raw: go build -o redis-database-plugin ./cmd/redis-database-plugin/
+
+- name: Create storage directories
+  file:
+    path: /home/azureuser/vault/plugin
+    state: directory
+
+- name: move plugin to plugin folder
+  ansible.builtin.copy:
+    src: /home/azureuser/vault-plugin-database-redis/redis-database-plugin
+    dest: /home/azureuser/vault/plugin/ 
+    follow: yes
