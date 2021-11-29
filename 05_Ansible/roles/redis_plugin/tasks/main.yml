@@ -12,7 +12,7 @@
   become: yes
     
 - name: Add Go to PATH
-  shell: echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
+  shell: export PATH=$PATH:/usr/local/go/bin
 
 - name: Clone plugin repo
   git:
@@ -26,4 +26,5 @@
 
 # TODO: Run Go commands, returns Permission denied atm
 # - name: Build vault-redis plugin
-#   command: go build -o "{{ vault_plugins_path }}"/redis-database-plugin "{{ plugin_path }}"/cmd/redis-database-plugin/
+#   command: chdir="{{ plugin_path }}" go build -o "{{ vault_plugins_path }}"/redis-database-plugin ./cmd/redis-database-plugin/
+
