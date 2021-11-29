@@ -102,15 +102,21 @@ az acr build  --registry <CONTAINER_NAME> --image <NAME>:latest <PATH_DOCKERFILE
 11. Install the app into Kubernetes
 
 ```
-helm install <NAME> ./<FILEPATH>
+az aks update -n <AKS_NAME> -g <RESOURCE_GROUP_NAME> --attach-acr <LOGIN_SERVER>
 ```
-12. Create a private SSH key
+
+12. Install the app into Kubernetes
+
+```
+helm install <NAME> ./<HELM_CHART_PATH>
+```
+13. Create a private SSH key
 
 ```
 ssh-keygen -t rsa
 ```
 
-13. Install Vault into VM with ansible
+14. Install Vault into VM with ansible
 
 ```
 ansible-playbook playbook.yaml -i inventory -u azureuser  --private-key id_rsa
