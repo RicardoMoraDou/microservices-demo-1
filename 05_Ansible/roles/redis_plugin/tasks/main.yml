@@ -1,24 +1,18 @@
 ---
 # tasks file for redis_plugin
 
-- name: Download go lang
-  become: yes
-  get_url:
-    url: https://storage.googleapis.com/golang/go1.17.3.linux-amd64.tar.gz
-    dest: /tmp/
-
 - name: Extract go1.17.3.linux-amd64.tar.gz into /usr/local
-  become: yes
   unarchive:
     remote_src: yes
-    src: /tmp/go1.17.3.linux-amd64.tar.gz
+    src: https://storage.googleapis.com/golang/go1.17.3.linux-amd64.tar.gz
     dest: "{{ binary_path }}"
     owner: "{{ go_user }}"
     group: "{{ go_group }}"
     mode: 0755
+  become: yes
     
 - name: Add Go to PATH
-  shell: export PATH=$PATH:/usr/local/go/bin
+  shell: echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
 
 - name: Clone plugin repo
   git:
@@ -31,7 +25,5 @@
     state: directory
 
 # TODO: Run Go commands, returns Permission denied atm
-- name: Build vault-redis plugin
-  command: chdir="{{ plugin_path }}" go build -o "{{ vault_plugins_path }}"/redis-database-plugin ./cmd/redis-database-plugin/
-  become: yes
-
+# - name: Build vault-redis plugin
+#   command: go build -o "{{ vault_plugins_path }}"/redis-database-plugin "{{ plugin_path }}"/cmd/redis-database-plugin/

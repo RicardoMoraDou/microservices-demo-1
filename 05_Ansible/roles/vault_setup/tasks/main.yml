@@ -7,11 +7,16 @@
 - name: Enabling database engine
   shell: vault secrets enable database
 
-- name: Register Redis plugin
-  shell: vault write sys/plugins/catalog/database/redis-database-plugin sha256={{ sha256 }} command=redis-database-plugin
+# - name: Register Redis plugin
+#   shell: vault write sys/plugins/catalog/database/redis-database-plugin sha256={{ sha256 }} command=redis-database-plugin
 
 - name: Enable Approle
   shell: vault auth enable approle
+
+- name: Create policies directory
+  file:
+    path: "{{ vault_dir }}/policies"
+    state: directory
 
 - name: Copy cartservice policy file
   template:
