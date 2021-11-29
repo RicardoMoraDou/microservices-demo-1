@@ -65,7 +65,17 @@ ACCOUNT_KEY=$(az storage account keys list --resource-group <RESOURCE_GROUP_NAME
 az storage container create --name <CONTAINER_NAME> --account-name <STORAGE_ACCOUNT_NAME> --account-key $ACCOUNT_KEY
 ```
 
-7. Provision the infrastructure
+6. Create a private SSH key
+
+```
+ssh-keygen -t rsa
+```
+
+7. Create a Environment Variable
+```
+TF_VAR_SSH_KEY="ssh-rsa XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+```
+8. Provision the infrastructure
 
 ```
 cd <TERRAFORM DIRECTORY PATH>
@@ -73,14 +83,6 @@ cd <TERRAFORM DIRECTORY PATH>
 terraform init
 
 terraform apply
-```
-
-8. Create Container Registry and Login to ACR
-
-```
-az acr create --resource-group <RESOURCE_GROUP_NAME> --name <CONTAINER_NAME> --sku Basic --admin-enabled true
-
-az acr login --name <REGISTRY-NAME>
 ```
 
 9. Create Container Registry and Login to ACR
@@ -99,7 +101,7 @@ az acr login --name <REGISTRY-NAME>
 az acr build  --registry <CONTAINER_NAME> --image <NAME>:latest <PATH_DOCKERFILE_MICROSERVICE>
 ```
 
-11. Install the app into Kubernetes
+11. Access AKS to ACR
 
 ```
 az aks update -n <AKS_NAME> -g <RESOURCE_GROUP_NAME> --attach-acr <LOGIN_SERVER>
@@ -110,13 +112,8 @@ az aks update -n <AKS_NAME> -g <RESOURCE_GROUP_NAME> --attach-acr <LOGIN_SERVER>
 ```
 helm install <NAME> ./<HELM_CHART_PATH>
 ```
-13. Create a private SSH key
 
-```
-ssh-keygen -t rsa
-```
-
-14. Install Vault into VM with ansible
+13. Install Vault into VM with ansible
 
 ```
 ansible-playbook playbook.yaml -i inventory -u azureuser  --private-key id_rsa

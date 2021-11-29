@@ -42,7 +42,27 @@ We decided to use Helm because there's a lot of support both from the community 
 
 We used Vault to keep our sensible data safe and secure, in addition to the great documentation that hashicorp provides we opted for this tool because it has a lot of flexibility both for authentication methods and secrets storage, while maintaining it's key feature, data encryption.
 
+## Cloud Infrastructure
 
+Due to the nature of vault, we decided to deploy the vault server on its own environment exposing the port 22 for configuration managment via ssh and the port 8200 where vault serves. The resources from kubernetes cluster are on a different virtual network in which there  are 2 main access points, the application loadbalancer and an ingress for the redis database to enable the connection with vault database secret engine. pods can pull images from an azure container registry .
+
+![alt text](documentation/img/infrastructure.png)
+
+## GitHub Workflows
+
+The workflows help the project with the deployment and updating the micro-services, infrastructure and also helping with heath because of the testing and also saving time because of the automation of some key task at the time of integration and deployment.
+
+**Workflow init**:  this workflow is ment to help the developer along the DevOps engineer to deploy for the first time this project, it creates all the infrastructure along with uploading the micro-services images to ACR, test the infrastructure, run helm charts, and preparing a vm to run volt for added security.
+
+![alt text](documentation/img/workflows_init.drawio.png)
+
+**Terraform workflow**: This workflows are created to run terraform on a pull request creation to let know to the developer if the infrastructure have any problems or errors, and on the acceptance of the pull request it run terraform apply to modify the infrastructure automatically.
+
+![alt text](documentation/img/terraform.png)
+
+**Microservices workflows**: This workflows are designed to help with the CI/CD of the application, at first we have CD, as soon as the pull request is accepted the workflow deletes the old image, builds and upload the new image to ACR and then update the image on AKS, and update the pot's that use that image, the next workflow is for CI, as soon as the pull request is accepted it builds the new image and test it to check if it is ready to be deployed, and for the last one, is for updating the helm charts ok AKS for the images in case it is modified and the pull request is accepted, this is for updating the pot's structure.
+
+![alt text](documentation/img/microservices.png)
 
 ## Tools
 
@@ -75,10 +95,7 @@ We used Vault to keep our sensible data safe and secure, in addition to the grea
 
 ## Usage Guide
 
-1. [Deploy the app from local machine](./documentation/deploy_from_localmachine.md)
-
-
-1. [Deploy the app with Github Actions](./)
+1. [Deploy the app with Github Actions](./documentation/deploy_from_github_actions.md)
 
 ---
 
@@ -98,7 +115,7 @@ We used Vault to keep our sensible data safe and secure, in addition to the grea
 
 1.  Helm
 
-If you don't have all the requirements visit the next documentation to insall all the packages you need: [Provision the infrastructure](./documentation/infra-guide.md)
+If you don't have all the requirements visit the next documentation to insall all the packages you need: [Provision the infrastructure](./documentation/prerequisites.md)
 
 1. Clone this repository
 
@@ -147,7 +164,17 @@ ACCOUNT_KEY=$(az storage account keys list --resource-group <RESOURCE_GROUP_NAME
 az storage container create --name <CONTAINER_NAME> --account-name <STORAGE_ACCOUNT_NAME> --account-key $ACCOUNT_KEY
 ```
 
-7. Provision the infrastructure
+6. Create a private SSH key
+
+```
+ssh-keygen -t rsa
+```
+
+7. Create a Environment Variable
+```
+TF_VAR_SSH_KEY="ssh-rsa XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+```
+8. Provision the infrastructure
 
 ```
 cd <TERRAFORM DIRECTORY PATH>
@@ -155,14 +182,6 @@ cd <TERRAFORM DIRECTORY PATH>
 terraform init
 
 terraform apply
-```
-
-8. Create Container Registry and Login to ACR
-
-```
-az acr create --resource-group <RESOURCE_GROUP_NAME> --name <CONTAINER_NAME> --sku Basic --admin-enabled true
-
-az acr login --name <REGISTRY-NAME>
 ```
 
 9. Create Container Registry and Login to ACR
@@ -181,7 +200,7 @@ az acr login --name <REGISTRY-NAME>
 az acr build  --registry <CONTAINER_NAME> --image <NAME>:latest <PATH_DOCKERFILE_MICROSERVICE>
 ```
 
-11. Install the app into Kubernetes
+11. Access AKS to ACR
 
 ```
 az aks update -n <AKS_NAME> -g <RESOURCE_GROUP_NAME> --attach-acr <LOGIN_SERVER>
@@ -192,13 +211,8 @@ az aks update -n <AKS_NAME> -g <RESOURCE_GROUP_NAME> --attach-acr <LOGIN_SERVER>
 ```
 helm install <NAME> ./<HELM_CHART_PATH>
 ```
-13. Create a private SSH key
 
-```
-ssh-keygen -t rsa
-```
-
-14. Install Vault into VM with ansible
+13. Install Vault into VM with ansible
 
 ```
 ansible-playbook playbook.yaml -i inventory -u azureuser  --private-key id_rsa

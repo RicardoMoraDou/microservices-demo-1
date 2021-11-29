@@ -4,10 +4,6 @@
 
 - [Create an Azure Account](https://azure.microsoft.com/)
 - [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- [Install Terraform CLI](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- [Install Ansible ](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- [Install Kubectl ](https://v1-18.docs.kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [Install Helm ](https://helm.sh/docs/intro/install/)
 
 
 ### Set up your Azure credentials
@@ -76,7 +72,9 @@ In order to manage azure resources with terraform we need to provide autheticati
 To create a service principal use the following command, replace <SUBSCRIPTION_ID> with the `id` field from the output of the first command `az login`:
 
 ```
-az ad sp create-for-rbac -n "<NAME_THIS_SP>" --role Contributor --scopes /subscriptions/<SUBSCRIPTION_ID>
+az ad sp create-for-rbac --name "servicePrin_Name" --role contributor \
+    --scopes /subscriptions/{subscription-id} \
+    --sdk-auth
 ```
 
 You should get and output like this:
@@ -91,23 +89,20 @@ Creating a role assignment under the scope of "/subscriptions/XXXXXXXX-XXXX-XXXX
   "name": "http://azure-cli-XXXX-XX-XX-XX-XX-XX",
   "password": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
   "tenant": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+  "activeDirectoryEndpointUrl": "https:XXXXXXXXXXXXXXXX.com",
+  "resourceManagerEndpointUrl": "https://XXXXXXXXXXXX.com/",
+  "activeDirectoryGraphResourceId": "https://XXXXXXXXXXXXX.net/",
+  "sqlManagementEndpointUrl": "https://XXXXXXXXXXXXX/",
+  "galleryEndpointUrl": "https://XXXXXXXXXXXX.com/",
+  "managementEndpointUrl": "https://XXXXXXXXXXXXXXXX.net/"
 }
 ```
 
-Now you have to set the next env variables:
+Now you have to set the next secrets variables:
 
 - ARM_CLIENT_ID
 - ARM_CLIENT_SECRET
 - ARM_TENANT_ID
-
-You can get this variables from the output of the previous command, like this:
-
-```
-ARM_CLIENT_ID="<appId>"
-ARM_CLIENT_SECRET="<password>"
-ARM_TENANT_ID="<tenant>"
-```
-
 
 
 ### Create an ssh key pair
@@ -126,15 +121,6 @@ TF_VAR_SSH_KEY="ssh-rsa XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 That way you and configuration management tools can login with the private key as the admin user: azureuser.
 
+### GPG
 
-
-### Provision the infrastructure with Terraform and Github Actions
-
-**For this step you need to set up and run your Github Actions pipeline.**
-
-*If you want to try to just provision the infrastructure alone, you'll have to export the previous env variables and run the following commands:* `terraform init`, `terraform apply`.
-
- 
-
-
-
+Follow the next tutorial [gpg tutotial](https://docs.github.com/en/actions/security-guides/encrypted-secrets#limits-for-secrets) 
