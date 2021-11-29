@@ -1,0 +1,11 @@
+---
+
+- name: Making plugin's sha256
+  shell: shasum -a 256 {{ redis_plugin }} | cut -d' ' -f1
+  register: sha256
+
+- name: Enabling database engine
+  shell: vault secrets enable database
+
+- name: Register Redis plugin
+  shell: vault write sys/plugins/catalog/database/redis-database-plugin sha256={{ sha256 }} command=redis-database-plugin

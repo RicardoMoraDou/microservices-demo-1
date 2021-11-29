@@ -13,14 +13,22 @@
   roles:
     - vault_init
     - vault_unseal
-  
-- hosts: all
-  roles:
-    - go_install
 
-- hosts: all
-  roles:
-    - redis_plugin
-  environment:
-    REDIS_HOST: 20.120.42.38
+# - hosts: all
+#   roles:
+#     - redis_plugin
 
+# - hosts: all
+#   tasks:
+#     - name: Reading root key contents
+#       command: cat {{item}}
+#       register: root_token
+#       with_fileglob: "{{ playbook_dir }}/rootKey/rootKey"
+#       delegate_to: localhost
+
+# - hosts: all 
+#   roles:
+#     - vault_setup
+#   environment:
+#     VAULT_ADDR: http://127.0.0.1:8200
+#     VAULT_TOKEN: "{{ root_token }}"

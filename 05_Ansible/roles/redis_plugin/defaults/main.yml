@@ -1,2 +1,6 @@
 ---
-# defaults file for redis_plugin
+plugin_path: "/home/azureuser/vault-plugin-database-redis"
+vault_plugins_path: "/home/azureuser/vault/plugins"
+binary_path: "/usr/local/"
+go_user: "azureuser"
+go_group: "azureuser"

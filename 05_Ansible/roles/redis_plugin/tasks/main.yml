@@ -1,20 +1,37 @@
 ---
 # tasks file for redis_plugin
+
+- name: Download go lang
+  become: yes
+  get_url:
+    url: https://storage.googleapis.com/golang/go1.17.3.linux-amd64.tar.gz
+    dest: /tmp/
+
+- name: Extract go1.17.3.linux-amd64.tar.gz into /usr/local
+  become: yes
+  unarchive:
+    remote_src: yes
+    src: /tmp/go1.17.3.linux-amd64.tar.gz
+    dest: "{{ binary_path }}"
+    owner: "{{ go_user }}"
+    group: "{{ go_group }}"
+    mode: 0755
+    
+- name: Add Go to PATH
+  shell: export PATH=$PATH:/usr/local/go/bin
+
 - name: Clone plugin repo
   git:
     repo: https://github.com/fhitchen/vault-plugin-database-redis
-    dest: /home/azureuser/
-
-- name: build vault-redis plugin
-  raw: go build -o redis-database-plugin ./cmd/redis-database-plugin/
+    dest: "{{ plugin_path }}"
 
 - name: Create storage directories
   file:
-    path: /home/azureuser/vault/plugin
+    path: "{{ vault_plugins_path }}"
     state: directory
 
-- name: move plugin to plugin folder
-  ansible.builtin.copy:
-    src: /home/azureuser/vault-plugin-database-redis/redis-database-plugin
-    dest: /home/azureuser/vault/plugin/ 
-    follow: yes
+# TODO: Run Go commands, returns Permission denied atm
+- name: Build vault-redis plugin
+  command: chdir="{{ plugin_path }}" go build -o "{{ vault_plugins_path }}"/redis-database-plugin ./cmd/redis-database-plugin/
+  become: yes
+
