@@ -9,3 +9,21 @@
 
 - name: Register Redis plugin
   shell: vault write sys/plugins/catalog/database/redis-database-plugin sha256={{ sha256 }} command=redis-database-plugin
+
+- name: Enable Approle
+  shell: vault auth enable approle
+
+- name: Copy cartservice policy file
+  template:
+    src: cartservice.hcl.j2
+    dest: "{{ vault_dir }}/policies/cartservice.hcl"
+  notify: cartservice_update
+
+- name: Create new cartservice role
+  shell: vault write auth/approle/role/cartservice/ token_policies=“cartservice” token_ttl=300h token_max_ttl=301h
+
+- name: Get role-id
+  shell: vault read auth/approle/role/cartservice/role-id
+
+- name: Get secret-id
+  shell: vault write -force auth/approle/role/cartservice/secret-id

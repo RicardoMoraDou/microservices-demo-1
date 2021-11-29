@@ -1,0 +1,3 @@
+- name: Write cartservice policy
+  command: vault policy write cartservice "{{ vault_dir }}/policies/cartservice.hcl"
+  listen: cartservice_update
