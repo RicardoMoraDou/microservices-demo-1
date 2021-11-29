@@ -1,4 +1,4 @@
-# Deploy app from Gitub Actions
+# Deploy app from Github Actions
 
 ## Prerequisites
 
